@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Artículo — RETOFIT</title>
+  <meta name="theme-color" content="#080808">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="apple-touch-icon" href="logo.png">
+  <link rel="manifest" href="uploads/manifest.json">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,400;0,600;0,700;0,800;0,900;1,900&family=Barlow:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    @keyframes spin { to { transform: rotate(360deg); } }
+    #article-loading {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100dvh;
+      flex-direction: column;
+      gap: 16px;
+    }
+    #article-content {
+      display: none;
+      flex-direction: column;
+      min-height: 100dvh;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Loading -->
+  <div id="article-loading">
+    <div style="width:48px;height:48px;border-radius:50%;border:3px solid var(--s3);border-top-color:var(--lime);animation:spin .8s linear infinite"></div>
+    <p style="font-size:13px;color:var(--muted)">Cargando artículo...</p>
+  </div>
+
+  <!-- Article content -->
+  <div id="article-content">
+
+    <!-- Nav header (sticky) -->
+    <div class="nav-header">
+      <div class="nav-header-top">
+        <a href="index.html"><img src="logo.png" alt="RETOFIT" class="home-logo"></a>
+      </div>
+      <div class="cat-bar">
+        <a class="cat-chip" href="index.html">Todos</a>
+        <a class="cat-chip" href="index.html?cat=entrenamiento">Entrenamiento</a>
+        <a class="cat-chip" href="index.html?cat=Nutricion">Nutrición</a>
+        <a class="cat-chip" href="index.html?cat=Mentalidad">Mentalidad</a>
+        <a class="cat-chip" href="index.html?cat=Bienestar">Bienestar</a>
+      </div>
+    </div>
+
+    <!-- Media header -->
+    <div class="ct-media" id="ct-media-wrap">
+      <div class="ct-nav">
+        <button class="btn-icon" onclick="history.back()">
+          <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+        </button>
+        <span class="dur-badge" id="ct-dur-badge" style="display:none">4 MIN</span>
+      </div>
+      <img id="ct-img" src="" alt="" style="display:none;width:100%;height:100%;object-fit:cover">
+      <div class="ct-media-placeholder" id="ct-placeholder">
+        <svg style="width:48px;height:48px;stroke:var(--muted);fill:none;stroke-width:1" viewBox="0 0 24 24">
+          <rect x="3" y="3" width="18" height="18" rx="2"/>
+          <circle cx="8.5" cy="8.5" r="1.5"/>
+          <polyline points="21 15 16 10 5 21"/>
+        </svg>
+      </div>
+    </div>
+
+    <!-- Body -->
+    <div class="ct-body" id="ct-body-wrap">
+      <div class="ct-meta-row">
+        <span class="ct-cat-pill" id="ct-cat-pill">Categoría</span>
+        <span class="ct-dur-lbl" id="ct-dur-lbl"></span>
+      </div>
+      <h1 class="ct-title" id="ct-title">Cargando...</h1>
+      <p class="ct-desc" id="ct-desc"></p>
+      <div id="ct-paragraphs"></div>
+
+      <!-- Navegación anterior / siguiente -->
+      <div class="ct-art-nav" id="ct-art-nav" style="display:none">
+        <a class="ct-art-nav-btn" id="ct-prev-btn" href="#" style="display:none">
+          <svg style="width:16px;height:16px;stroke:var(--lime);fill:none;stroke-width:2.5;flex-shrink:0" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+          <div class="ct-art-nav-thumb"><img id="ct-prev-img" src="" alt=""></div>
+          <div class="ct-art-nav-info">
+            <span class="ct-art-nav-label">Anterior</span>
+            <span class="ct-art-nav-title" id="ct-prev-name">—</span>
+          </div>
+        </a>
+        <a class="ct-art-nav-btn ct-art-nav-btn--next" id="ct-next-btn" href="#" style="display:none">
+          <div class="ct-art-nav-info" style="text-align:right">
+            <span class="ct-art-nav-label">Siguiente</span>
+            <span class="ct-art-nav-title" id="ct-next-name">—</span>
+          </div>
+          <div class="ct-art-nav-thumb"><img id="ct-next-img" src="" alt=""></div>
+          <svg style="width:16px;height:16px;stroke:var(--lime);fill:none;stroke-width:2.5;flex-shrink:0" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+        </a>
+      </div>
+    </div>
+
+  </div><!-- /article-content -->
+
+  <div id="toast"></div>
+  <script src="app.js"></script>
+</body>
+</html>

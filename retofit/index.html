@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>RETOFIT — Energía en acción</title>
+  <meta name="theme-color" content="#080808">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="RETOFIT">
+  <link rel="apple-touch-icon" href="logo.png">
+  <link rel="manifest" href="uploads/manifest.json">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,400;0,600;0,700;0,800;0,900;1,900&family=Barlow:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app-wrap">
+
+    <!-- Bottom / Sidebar Nav -->
+    <nav class="app-nav">
+      <div class="nav-top">
+        <div class="nav-brand"><img src="logo.png" alt="RETOFIT"></div>
+      </div>
+      <div class="nav-links">
+        <a class="nav-item" id="nav-home" href="index.html">
+          <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+          <span>Home</span>
+        </a>
+        <a class="nav-item" id="nav-stats" href="stats.html">
+          <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+          <span>Stats</span>
+        </a>
+        <a class="nav-item" id="nav-perfil" href="perfil.html">
+          <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          <span>Perfil</span>
+        </a>
+      </div>
+      <div class="nav-bottom">
+        <a class="nav-user" href="perfil.html">
+          <div class="nav-user-ava">R</div>
+          <div class="nav-user-info">
+            <p class="nav-user-name">Atleta</p>
+            <p class="nav-user-sub">Miembro RETOFIT</p>
+          </div>
+        </a>
+      </div>
+    </nav>
+
+    <main class="app-main">
+
+      <!-- ══ HOME SCREEN ══ -->
+      <div id="home-challenges" style="display:flex;flex-direction:column;min-height:100dvh">
+
+        <!-- Header -->
+        <div class="home-header">
+          <img src="logo.png" alt="RETOFIT" class="home-logo">
+          <a class="home-ava-wrap" href="perfil.html">
+            <div class="home-ava">R</div>
+            <span class="home-ava-lbl">Perfil</span>
+          </a>
+        </div>
+
+        <!-- Category bar -->
+        <div class="cat-bar">
+          <button class="cat-chip active" data-cat="todos" onclick="setCategory('todos',this)">Todos</button>
+          <button class="cat-chip" data-cat="entrenamiento" onclick="setCategory('entrenamiento',this)">Entrenamiento</button>
+          <button class="cat-chip" data-cat="Nutricion" onclick="setCategory('Nutricion',this)">Nutrición</button>
+          <button class="cat-chip" data-cat="Mentalidad" onclick="setCategory('Mentalidad',this)">Mentalidad</button>
+          <button class="cat-chip" data-cat="Bienestar" onclick="setCategory('Bienestar',this)">Bienestar</button>
+        </div>
+
+        <!-- Scrollable content -->
+        <div class="scroll-area">
+
+          <!-- Retos del día -->
+          <div id="home-retos-section">
+            <div class="home-section">
+              <div class="home-section-header">
+                <p class="home-section-title">Retos del día</p>
+                <div style="display:flex;align-items:center;gap:8px">
+                  <div class="daily-prog-bar-wrap" style="width:80px">
+                    <div class="daily-prog-bar-fill" id="daily-prog-bar" style="width:0%"></div>
+                  </div>
+                  <span class="daily-prog-txt" id="daily-prog-lbl">0/4</span>
+                </div>
+              </div>
+            </div>
+            <div class="retos-scroll" id="daily-cards"></div>
+          </div>
+
+          <!-- Contenido reciente header -->
+          <div class="home-section" id="home-recent-section">
+            <div class="home-section-header">
+              <p class="home-section-title" id="home-recent-title">Contenido reciente</p>
+            </div>
+          </div>
+
+          <!-- Featured article -->
+          <div id="home-featured-wrap"></div>
+
+          <!-- Content grid -->
+          <div class="content-grid" id="home-grid"></div>
+
+          <!-- Load more button (for category pages) -->
+          <button class="load-more-btn" id="content-load-more" style="display:none" onclick="handleLoadMore()">
+            Cargar más
+          </button>
+
+          <!-- Tips del día -->
+          <div id="home-tips-section" class="home-section">
+            <div class="home-section-header">
+              <p class="home-section-title">Tips del día</p>
+            </div>
+            <div id="daily-tips-container">
+              <div class="tip-card">
+                <div class="tip-ic"><svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
+                <p class="tip-txt">Tomá agua antes, durante y después del ejercicio para mantener tu rendimiento al máximo.</p>
+              </div>
+              <div class="tip-card">
+                <div class="tip-ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div>
+                <p class="tip-txt">Un descanso de calidad es tan importante como el entrenamiento. Dormí 7-8 horas cada noche.</p>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div><!-- /home-challenges -->
+
+    </main>
+  </div>
+
+  <div id="toast"></div>
+
+  <script src="app.js"></script>
+  <script>
+    function handleLoadMore() {
+      if (currentCategory === 'todos') loadMoreContent();
+      else loadMoreCategoryContent();
+    }
+  </script>
+</body>
+</html>

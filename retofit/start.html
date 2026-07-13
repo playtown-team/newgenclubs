@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Bienvenido — RETOFIT</title>
+  <meta name="theme-color" content="#080808">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="RETOFIT">
+  <link rel="apple-touch-icon" href="logo.png">
+  <link rel="manifest" href="uploads/manifest.json">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,400;0,600;0,700;0,800;0,900;1,900&family=Barlow:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <div id="start-container" class="start-screen">
+
+    <img src="logo.png" alt="RETOFIT" class="start-logo">
+
+    <div class="start-hero">
+      <h1 class="start-title">Tu perfil<br><span class="grad-text">atleta</span></h1>
+      <p class="start-sub">Completá tus datos para personalizar tu experiencia y empezar a entrenar.</p>
+    </div>
+
+    <form id="start-form" class="start-form" onsubmit="submitStartForm(event)">
+
+      <div class="start-field-wrap">
+        <label class="start-label" for="start-name">Nombre (opcional)</label>
+        <input class="field" type="text" id="start-name" placeholder="Tu nombre" maxlength="40" autocomplete="given-name">
+      </div>
+
+      <div class="start-field-wrap">
+        <label class="start-label">Edad</label>
+        <div class="start-stepper">
+          <button type="button" onclick="stepStart('age',-1)">−</button>
+          <div class="start-stepper-val">
+            <span class="start-stepper-num" id="start-age-val">25</span>
+            <span class="start-stepper-unit">años</span>
+          </div>
+          <button type="button" onclick="stepStart('age',1)">+</button>
+        </div>
+      </div>
+
+      <div class="start-field-wrap">
+        <label class="start-label">Altura</label>
+        <div class="start-stepper">
+          <button type="button" onclick="stepStart('height',-1)">−</button>
+          <div class="start-stepper-val">
+            <span class="start-stepper-num" id="start-height-val">170</span>
+            <span class="start-stepper-unit">cm</span>
+          </div>
+          <button type="button" onclick="stepStart('height',1)">+</button>
+        </div>
+      </div>
+
+      <div class="start-field-wrap">
+        <label class="start-label">Peso</label>
+        <div class="start-stepper">
+          <button type="button" onclick="stepStart('weight',-1)">−</button>
+          <div class="start-stepper-val">
+            <span class="start-stepper-num" id="start-weight-val">70</span>
+            <span class="start-stepper-unit">kg</span>
+          </div>
+          <button type="button" onclick="stepStart('weight',1)">+</button>
+        </div>
+      </div>
+
+      <button class="btn btn-p" type="submit" style="margin-top:8px">
+        COMENZAR
+        <svg style="width:16px;height:16px;stroke:#000;fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round;margin-left:8px" viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+      </button>
+
+    </form>
+
+  </div>
+
+  <div id="toast"></div>
+  <script src="app.js"></script>
+</body>
+</html>

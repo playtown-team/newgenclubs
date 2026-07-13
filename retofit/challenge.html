@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Reto — RETOFIT</title>
+  <meta name="theme-color" content="#080808">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="apple-touch-icon" href="logo.png">
+  <link rel="manifest" href="uploads/manifest.json">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,400;0,600;0,700;0,800;0,900;1,900&family=Barlow:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    body { overflow: hidden; }
+    #challenge-container {
+      grid-template-columns: 3fr 2fr;
+      grid-template-rows: auto auto 1fr;
+      min-height: 100dvh;
+      overflow: hidden;
+    }
+    #challenge-container > .nav-header { grid-column: 1 / -1; grid-row: 1; }
+    #challenge-container > .ch-header { grid-column: 1 / -1; grid-row: 2; }
+    #challenge-container > .vplayer { grid-column: 1; grid-row: 3; align-self: start; }
+    #challenge-container > .scroll-area { grid-column: 2; grid-row: 3; border-left: 1px solid var(--border); padding-bottom: 40px; overflow-y: auto; }
+
+    #challenge-loading {
+      align-items: center;
+      justify-content: center;
+      min-height: 100dvh;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    #screen-mision {
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100dvh;
+      position: relative;
+      overflow: hidden;
+    }
+
+    @media(max-width: 900px) {
+      #challenge-container {
+        display: flex !important;
+        flex-direction: column;
+        overflow: visible;
+      }
+      #challenge-container > .ch-header { padding: 14px 20px; gap: 14px; justify-content: flex-start; overflow: hidden; }
+      #challenge-container .ch-header-info { text-align: left; flex: 1; min-width: 0; overflow: hidden; }
+      #challenge-container > .vplayer { width: 100%; aspect-ratio: 16/9; flex-shrink: 0; }
+      #challenge-container > .scroll-area { flex: none; width: 100%; border-left: none; overflow: visible; }
+      body { overflow-y: auto; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Loading state -->
+  <div id="challenge-loading" style="display:flex">
+    <div style="width:48px;height:48px;border-radius:50%;border:3px solid var(--s3);border-top-color:var(--lime);animation:spin .8s linear infinite"></div>
+    <p style="font-size:13px;color:var(--muted)">Cargando reto...</p>
+  </div>
+
+  <!-- Challenge layout -->
+  <div id="challenge-container" style="display:none">
+
+    <!-- Nav header -->
+    <div class="nav-header">
+      <div class="nav-header-top">
+        <a href="index.html"><img src="logo.png" alt="RETOFIT" class="home-logo"></a>
+      </div>
+      <div class="cat-bar">
+        <a class="cat-chip" href="index.html">Todos</a>
+        <a class="cat-chip" href="index.html?cat=entrenamiento">Entrenamiento</a>
+        <a class="cat-chip" href="index.html?cat=Nutricion">Nutrición</a>
+        <a class="cat-chip" href="index.html?cat=Mentalidad">Mentalidad</a>
+        <a class="cat-chip" href="index.html?cat=Bienestar">Bienestar</a>
+      </div>
+    </div>
+
+    <!-- Header -->
+    <div class="ch-header">
+      <button class="btn-icon" onclick="history.back()">
+        <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+      </button>
+      <div class="ch-header-info">
+        <p class="ch-header-dur" id="ch-level">1 minuto</p>
+        <p class="ch-header-name" id="ch-title">Reto</p>
+      </div>
+    </div>
+
+    <!-- Video Player -->
+    <div class="vplayer" id="vplayer" onclick="toggleVideo()">
+      <div class="vbg" id="vbg" style="background:linear-gradient(270deg,#0d2a00,#001a14,#002010,#0d2a00);background-size:400% 400%"></div>
+      <div class="vscan"></div>
+      <div class="vanim-wrap" id="vanim"></div>
+      <div id="vloading" style="display:none;position:absolute;inset:0;z-index:2;align-items:center;justify-content:center;flex-direction:column;gap:10px">
+        <div style="width:32px;height:32px;border-radius:50%;border:3px solid rgba(255,255,255,0.12);border-top-color:var(--lime);animation:spin .8s linear infinite"></div>
+        <span style="font-size:11px;color:rgba(255,255,255,0.4);letter-spacing:.8px">Cargando video...</span>
+      </div>
+      <div id="verror" style="display:none;position:absolute;inset:0;z-index:2;align-items:center;justify-content:center;flex-direction:column;gap:8px">
+        <svg style="width:28px;height:28px;stroke:rgba(255,255,255,0.3);fill:none;stroke-width:1.5" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        <span style="font-size:12px;color:rgba(255,255,255,0.35);text-align:center;padding:0 24px">No se pudo cargar el video</span>
+      </div>
+      <video id="vreal" playsinline loop
+        style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:none;z-index:1"></video>
+      <div class="voverlay" id="voverlay">
+        <div class="play-lg">
+          <svg viewBox="0 0 24 24"><path d="M5 3l14 9-14 9V3z"/></svg>
+        </div>
+      </div>
+      <div class="vlabel">
+        <span class="vrec" id="vrec">Tutorial</span>
+      </div>
+      <div class="vcontrols">
+        <div class="vprog"><div class="vpfill" id="vpfill"></div></div>
+        <div class="vcrow">
+          <button class="vbtn" onclick="event.stopPropagation();toggleVideo()">
+            <svg id="vplay-icon" viewBox="0 0 24 24">
+              <path d="M5 3l14 9-14 9V3z" fill="rgba(255,255,255,0.8)" stroke="none"/>
+            </svg>
+          </button>
+          <span class="vtime" id="vtime-lbl">0:00 / 1:00</span>
+          <button class="vbtn"><svg viewBox="0 0 24 24"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg></button>
+          <button class="vbtn"><svg viewBox="0 0 24 24"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg></button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Info panel -->
+    <div class="scroll-area">
+      <div class="ch-info">
+        <p id="ch-desc" class="body" style="line-height:1.65">Preparate para el reto.</p>
+
+        <div class="ch-steps-card">
+          <p class="section-title" style="margin-bottom:14px">Cómo hacerlo</p>
+          <div class="fc" style="gap:12px" id="ch-steps"></div>
+        </div>
+
+        <button class="btn btn-p pulse" id="ch-start-btn" onclick="startChallenge()">
+          <svg style="width:17px;height:17px;fill:#000;margin-right:8px" viewBox="0 0 24 24">
+            <path d="M13 2L4.5 13.5H11L10 22L20 10H13.5Z"/>
+          </svg>
+          Comenzar reto
+        </button>
+
+        <!-- Countdown timer (visible after "Comenzar") -->
+        <div id="countdown-wrap" style="display:none;text-align:center;padding:4px 0">
+          <div id="countdown-val" style="font-family:'Barlow Condensed';font-size:72px;font-weight:900;color:var(--lime);line-height:1;letter-spacing:-2px">1:00</div>
+          <p style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:1.5px;margin-top:2px">tiempo restante</p>
+        </div>
+
+        <button class="btn btn-p" id="ch-finish-btn" onclick="finishChallenge()"
+          style="display:none;opacity:0.4;background:var(--lime)" disabled>
+          <svg style="width:17px;height:17px;fill:#000;margin-right:8px" viewBox="0 0 24 24">
+            <polyline points="20 6 9 17 4 12"/>
+          </svg>
+          Completar ejercicio
+        </button>
+
+        <div id="ch-action-btns" style="display:none;gap:8px;width:100%">
+          <button class="btn btn-xs btn-ghost" onclick="restartChallenge()">
+            <svg style="width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;margin-right:6px" viewBox="0 0 24 24">
+              <path d="M1 4v6h6"/><path d="M3.51 15a9 9 0 1 0 .49-3.27"/>
+            </svg>
+            Reiniciar
+          </button>
+          <button class="btn btn-xs btn-ghost btn-abandon" onclick="abandonChallenge()">
+            <svg style="width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;margin-right:6px" viewBox="0 0 24 24">
+              <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+            </svg>
+            Abandonar
+          </button>
+        </div>
+
+        <p style="font-size:12px;color:var(--muted);text-align:center" id="ch-dur-txt">Duración: 1:00</p>
+        <p style="font-size:11px;color:rgba(191,255,0,0.5);text-align:center;display:none" id="ch-watch-hint">Mirá el video completo para finalizar</p>
+      </div>
+    </div>
+
+  </div><!-- /challenge-container -->
+
+  <!-- ══ MISIÓN CUMPLIDA ══ -->
+  <div id="screen-mision" style="display:none">
+    <div class="blob" style="width:400px;height:400px;background:var(--lime);top:-100px;right:-100px"></div>
+    <div class="blob" style="width:300px;height:300px;background:var(--cyan);bottom:80px;left:-80px"></div>
+    <div style="max-width:480px;width:100%;margin:0 auto;padding:48px 32px;display:flex;flex-direction:column;align-items:center;gap:24px;text-align:center;flex:1;justify-content:center;position:relative;z-index:1">
+      <div class="fc ac g12">
+        <p class="label" style="color:rgba(191,255,0,.6)">¡Lo lograste!</p>
+        <div class="check-ring">
+          <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <h2 class="headline tc" style="font-size:52px">Misión<br><span class="grad-text">Cumplida</span></h2>
+        <p class="body tc" style="max-width:280px">Completaste <strong id="mc-name" style="color:var(--text)">el reto</strong>. Un reto que cambia tu día.</p>
+      </div>
+
+      <div class="mc-stats">
+        <div class="mc-stat">
+          <div class="mc-stat-num" id="mc-time" style="color:var(--lime)">1:00</div>
+          <div class="mc-stat-lbl">Completado</div>
+        </div>
+        <div class="mc-stat">
+          <div class="mc-stat-num" id="mc-streak" style="color:var(--cyan)">1</div>
+          <div class="mc-stat-lbl">Días seguidos</div>
+        </div>
+        <div class="mc-stat">
+          <div class="mc-stat-num" id="mc-total" style="background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">1</div>
+          <div class="mc-stat-lbl">Total retos</div>
+        </div>
+      </div>
+
+      <div class="badge-float">
+        <svg style="width:16px;height:16px;fill:var(--lime)" viewBox="0 0 24 24">
+          <path d="M13 2L4.5 13.5H11L10 22L20 10H13.5Z"/>
+        </svg>
+        <span style="font-family:'Barlow Condensed';font-weight:800;font-size:14px;color:var(--lime);letter-spacing:1.5px">RETO COMPLETADO</span>
+      </div>
+
+      <div class="fc g8" style="width:100%">
+        <button class="btn btn-p" onclick="location.href='index.html'">
+          <svg style="width:17px;height:17px;fill:#000;margin-right:8px" viewBox="0 0 24 24">
+            <path d="M13 2L4.5 13.5H11L10 22L20 10H13.5Z"/>
+          </svg>
+          Otro desafío
+        </button>
+        <button class="btn btn-s" onclick="shareAchievement()">
+          <svg style="width:15px;height:15px;stroke:var(--lime);fill:none;stroke-width:2;stroke-linecap:round;margin-right:8px" viewBox="0 0 24 24">
+            <circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/>
+            <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
+          </svg>
+          Compartir logro
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast"></div>
+
+  <style>
+    @keyframes spin { to { transform: rotate(360deg); } }
+  </style>
+
+  <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Perfil — RETOFIT</title>
+  <meta name="theme-color" content="#080808">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="apple-touch-icon" href="logo.png">
+  <link rel="manifest" href="uploads/manifest.json">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,400;0,600;0,700;0,800;0,900;1,900&family=Barlow:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app-wrap">
+
+    <!-- Nav -->
+    <nav class="app-nav">
+      <div class="nav-top">
+        <div class="nav-brand"><img src="logo.png" alt="RETOFIT"></div>
+      </div>
+      <div class="nav-links">
+        <a class="nav-item" id="nav-home" href="index.html">
+          <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+          <span>Home</span>
+        </a>
+        <a class="nav-item" id="nav-stats" href="stats.html">
+          <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+          <span>Stats</span>
+        </a>
+        <a class="nav-item" id="nav-perfil" href="perfil.html">
+          <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          <span>Perfil</span>
+        </a>
+      </div>
+      <div class="nav-bottom">
+        <a class="nav-user" href="perfil.html">
+          <div class="nav-user-ava pf-ava">R</div>
+          <div class="nav-user-info">
+            <p class="nav-user-name">Atleta</p>
+            <p class="nav-user-sub">Miembro RETOFIT</p>
+          </div>
+        </a>
+      </div>
+    </nav>
+
+    <main class="app-main">
+      <div id="perfil-container" style="display:flex;flex-direction:column;min-height:100dvh">
+
+        <div class="page-header">
+          <div class="page-header-left">
+            <p class="page-eyebrow">Tu cuenta</p>
+            <p class="page-title">Perfil</p>
+          </div>
+        </div>
+
+        <div class="scroll-area">
+          <div class="content">
+
+            <!-- Profile hero -->
+            <div class="profile-hero">
+              <div class="pf-ava">R</div>
+              <div class="profile-hero-info">
+                <p id="pf-name" class="profile-hero-name">Atleta</p>
+                <p class="profile-hero-sub">Miembro RETOFIT</p>
+                <div class="profile-hero-badge">
+                  <svg viewBox="0 0 24 24"><path d="M13 2L4.5 13.5H11L10 22L20 10H13.5Z"/></svg>
+                  <span>Atleta</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Quick stats -->
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+              <div class="kpi-card" style="padding:16px">
+                <div class="kpi-num" id="pf-streak" style="font-size:28px;color:var(--lime)">0 días</div>
+                <div class="kpi-lbl">Racha actual</div>
+              </div>
+              <div class="kpi-card" style="padding:16px">
+                <div class="kpi-num" id="pf-total" style="font-size:28px;color:var(--cyan)">0 retos</div>
+                <div class="kpi-lbl">Total completados</div>
+              </div>
+            </div>
+
+            <div class="profile-grid">
+              <!-- Datos personales -->
+              <div>
+                <p class="section-title">Datos personales</p>
+                <div class="fsec">
+                  <div class="frow" onclick="openEdit('name')">
+                    <div class="frow-ic" style="background:var(--lime-dim)">
+                      <svg style="stroke:var(--lime)" viewBox="0 0 24 24">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
+                      </svg>
+                    </div>
+                    <div class="frow-body">
+                      <p class="frow-lbl">Nombre</p>
+                      <p class="frow-val" id="pf-val-name">Atleta</p>
+                    </div>
+                    <div class="frow-arr"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div>
+                  </div>
+                  <div class="frow" onclick="openEdit('age')">
+                    <div class="frow-ic" style="background:var(--cyan-dim)">
+                      <svg style="stroke:var(--cyan)" viewBox="0 0 24 24">
+                        <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+                      </svg>
+                    </div>
+                    <div class="frow-body">
+                      <p class="frow-lbl">Edad</p>
+                      <p class="frow-val" id="pf-val-age">30 años</p>
+                    </div>
+                    <div class="frow-arr"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Medidas -->
+              <div>
+                <p class="section-title">Medidas</p>
+                <div class="fsec">
+                  <div class="frow" onclick="openEdit('weight')">
+                    <div class="frow-ic" style="background:var(--lime-dim)">
+                      <svg style="stroke:var(--lime)" viewBox="0 0 24 24">
+                        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+                      </svg>
+                    </div>
+                    <div class="frow-body">
+                      <p class="frow-lbl">Peso</p>
+                      <p class="frow-val" id="pf-val-weight">70 kg</p>
+                    </div>
+                    <div class="frow-arr"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div>
+                  </div>
+                  <div class="frow" onclick="openEdit('height')">
+                    <div class="frow-ic" style="background:var(--cyan-dim)">
+                      <svg style="stroke:var(--cyan)" viewBox="0 0 24 24">
+                        <polyline points="9 11 12 14 22 4"/>
+                        <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
+                      </svg>
+                    </div>
+                    <div class="frow-body">
+                      <p class="frow-lbl">Altura</p>
+                      <p class="frow-val" id="pf-val-height">170 cm</p>
+                    </div>
+                    <div class="frow-arr"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Acciones -->
+            <div>
+              <p class="section-title">Acciones</p>
+              <div class="fsec">
+                <a class="frow" href="stats.html">
+                  <div class="frow-ic" style="background:var(--lime-dim)">
+                    <svg style="stroke:var(--lime)" viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+                  </div>
+                  <div class="frow-body">
+                    <p class="frow-lbl">Tu progreso</p>
+                    <p class="frow-val">Ver estadísticas</p>
+                  </div>
+                  <div class="frow-arr"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div>
+                </a>
+              </div>
+            </div>
+
+            <!-- Reset data -->
+            <button class="btn-ghost" onclick="resetAllData()"
+              style="color:#ff4545;border:1px solid rgba(255,69,69,0.18);border-radius:14px;padding:14px">
+              <svg style="width:15px;height:15px;stroke:#ff4545;fill:none;stroke-width:2;stroke-linecap:round;margin-right:8px" viewBox="0 0 24 24">
+                <polyline points="3 6 5 6 21 6"/>
+                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/>
+              </svg>
+              Restablecer datos
+            </button>
+
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Edit Modal -->
+  <div class="modal-bg" id="modal" onclick="if(event.target===this)closeEdit()">
+    <div class="modal-sheet">
+      <div class="mhandle"></div>
+      <p class="label" id="modal-label" style="color:var(--text);font-size:13px">Editar</p>
+      <div id="modal-body"></div>
+      <div class="fc g8">
+        <button class="btn btn-p" onclick="saveEdit()">Guardar</button>
+        <button class="btn-ghost" onclick="closeEdit()">Cancelar</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast"></div>
+  <script src="app.js"></script>
+</body>
+</html>

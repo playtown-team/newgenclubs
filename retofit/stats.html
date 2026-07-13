@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Stats — RETOFIT</title>
+  <meta name="theme-color" content="#080808">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="apple-touch-icon" href="logo.png">
+  <link rel="manifest" href="uploads/manifest.json">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,400;0,600;0,700;0,800;0,900;1,900&family=Barlow:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app-wrap">
+
+    <!-- Nav -->
+    <nav class="app-nav">
+      <div class="nav-top">
+        <div class="nav-brand"><img src="logo.png" alt="RETOFIT"></div>
+      </div>
+      <div class="nav-links">
+        <a class="nav-item" id="nav-home" href="index.html">
+          <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+          <span>Home</span>
+        </a>
+        <a class="nav-item" id="nav-stats" href="stats.html">
+          <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+          <span>Stats</span>
+        </a>
+        <a class="nav-item" id="nav-perfil" href="perfil.html">
+          <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          <span>Perfil</span>
+        </a>
+      </div>
+      <div class="nav-bottom">
+        <a class="nav-user" href="perfil.html">
+          <div class="nav-user-ava">R</div>
+          <div class="nav-user-info">
+            <p class="nav-user-name">Atleta</p>
+            <p class="nav-user-sub">Miembro RETOFIT</p>
+          </div>
+        </a>
+      </div>
+    </nav>
+
+    <main class="app-main">
+      <div id="stats-container" style="display:flex;flex-direction:column;min-height:100dvh">
+
+        <div class="page-header">
+          <div class="page-header-left">
+            <p class="page-eyebrow" style="color:var(--lime)">Tu rendimiento</p>
+            <p class="page-title">Stats</p>
+          </div>
+          <div style="width:38px;height:38px;border-radius:12px;background:var(--lime-dim);border:1px solid var(--lime-border);display:flex;align-items:center;justify-content:center">
+            <svg viewBox="0 0 24 24" style="width:16px;height:16px">
+              <path d="M13 2L4.5 13.5H11L10 22L20 10H13.5Z" fill="var(--lime)"/>
+            </svg>
+          </div>
+        </div>
+
+        <div class="scroll-area">
+          <div class="content">
+
+            <!-- KPI Grid -->
+            <div>
+              <p class="section-title">Progreso total</p>
+              <div class="kpi-grid">
+                <div class="kpi-card">
+                  <div class="kpi-num" id="lg-total" style="color:var(--lime)">0</div>
+                  <div class="kpi-lbl">Retos</div>
+                </div>
+                <div class="kpi-card">
+                  <div class="kpi-num" id="lg-streak" style="color:var(--cyan)">0</div>
+                  <div class="kpi-lbl">Días de racha</div>
+                </div>
+                <div class="kpi-card">
+                  <div class="kpi-num" id="lg-mins" style="background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">0m</div>
+                  <div class="kpi-lbl">Minutos activos</div>
+                </div>
+                <div class="kpi-card">
+                  <div class="kpi-num" id="lg-week" style="color:var(--text)">0</div>
+                  <div class="kpi-lbl">Esta semana</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Weekly chart -->
+            <div class="week-card">
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px">
+                <div>
+                  <p class="section-title" style="margin:0 0 2px">Rendimiento semanal</p>
+                  <p style="font-size:12px;color:var(--muted)">Retos completados por día</p>
+                </div>
+                <span style="font-size:10px;color:var(--muted);letter-spacing:.5px">Resetea el lunes</span>
+              </div>
+              <div class="week-chart" id="week-bars"></div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <div id="toast"></div>
+  <script src="app.js"></script>
+</body>
+</html>
