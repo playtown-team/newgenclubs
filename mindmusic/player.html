@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>MindMusic — Reproductor</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Work+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="apple-touch-icon" href="favicon.svg">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="photo-hero" aria-hidden="true"></div>
+
+<div id="player-container" class="page">
+  <header class="app-header">
+    <a class="back-btn" href="javascript:history.back()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+      Volver
+    </a>
+    <div class="header-actions">
+      <a class="avatar js-avatar" href="perfil.html">I</a>
+    </div>
+  </header>
+
+  <div id="player-loading" class="loading-wrap">
+    <div class="spinner"></div>
+    Cargando...
+  </div>
+
+  <div id="player-content" style="display:none">
+    <span class="badge center" id="mood-badge">MOOD ACTUAL</span>
+
+    <div class="player-wrap">
+      <div class="player-visual" id="player-visual">
+        <canvas id="wave-canvas" class="wave-canvas" aria-hidden="true"></canvas>
+        <div class="wave-veil" aria-hidden="true"></div>
+      </div>
+
+      <div class="player-art" id="player-art"></div>
+      <h1 class="player-title" id="player-title"></h1>
+      <p class="player-desc" id="player-desc"></p>
+
+      <div class="progress-wrap">
+        <div class="progress-track" id="progress-track">
+          <div class="progress-fill" id="progress-fill"></div>
+        </div>
+        <div class="progress-times">
+          <span id="time-current">0:00</span>
+          <span id="time-total">0:00</span>
+        </div>
+      </div>
+
+      <div class="controls">
+        <button class="ctrl-btn" id="shuffle-btn" aria-label="Aleatorio">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h3.5L15 18h3.5M3 18h3.5l2-2.7M16 6h2.5M18.5 6 16 3.5M18.5 6 16 8.5M18.5 18 16 15.5M18.5 18 16 20.5"/></svg>
+        </button>
+        <button class="ctrl-btn" id="prev-btn" aria-label="Anterior">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 5h2v14H6zM20 5v14l-11-7z"/></svg>
+        </button>
+        <button class="play-main" id="play-main" aria-label="Reproducir">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+        </button>
+        <button class="ctrl-btn" id="next-btn" aria-label="Siguiente">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 5h2v14h-2zM4 5v14l11-7z"/></svg>
+        </button>
+        <button class="ctrl-btn" id="repeat-btn" aria-label="Repetir">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 2l4 4-4 4M3 11V9a4 4 0 0 1 4-4h14M7 22l-4-4 4-4M21 13v2a4 4 0 0 1-4 4H3"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <section id="player-queue" class="queue" style="display:none">
+      <div class="section-head">
+        <h2>De la playlist</h2>
+        <a class="queue-link" id="queue-open" href="#">Ver playlist</a>
+      </div>
+      <div class="tracklist" id="queue-list"></div>
+    </section>
+  </div>
+
+  <audio id="player-audio" preload="metadata"></audio>
+</div>
+
+<nav class="app-nav">
+  <div class="nav-top"><div class="brand"><svg class="brand-icon" viewBox="0 0 120 64" fill="none" aria-hidden="true"><defs><linearGradient id="mmWaveNav" x1="0" y1="0" x2="120" y2="0" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#8FD9E8"/><stop offset="50%" stop-color="#6E8EE8"/><stop offset="100%" stop-color="#B3A6EE"/></linearGradient></defs><path d="M4,46 C12,46 12,26 20,26 C27,26 27,46 34,46 C41,46 41,6 48,6 C54,6 54,58 60,58 C66,58 66,6 72,6 C79,6 79,46 86,46 C93,46 93,26 100,26 C108,26 108,46 116,46" stroke="url(#mmWaveNav)" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="brand-text">MINDMUSIC<small>by Playtown</small></span></div></div>
+  <div class="nav-links">
+    <a class="nav-item" id="nav-home" href="index.html">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg>
+      <span>Inicio</span>
+    </a>
+    <a class="nav-item" id="nav-explorar" href="explorar.html">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="m15 9-4 2-2 4 4-2z"/></svg>
+      <span>Explorar</span>
+    </a>
+    <a class="nav-item" id="nav-perfil" href="perfil.html">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.5-7 8-7s8 3 8 7"/></svg>
+      <span>Perfil</span>
+    </a>
+  </div>
+  <div class="nav-bottom">
+    <a class="nav-user" href="perfil.html">
+      <div class="avatar js-avatar">I</div>
+      <div>
+        <p class="nav-user-name">Invitado</p>
+        <p class="nav-user-sub">Miembro MindMusic</p>
+      </div>
+    </a>
+  </div>
+</nav>
+
+<script src="mock-data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

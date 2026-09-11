@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <linearGradient id="mmWaveFav" x1="4" y1="0" x2="116" y2="0" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#8FD9E8"/>
+      <stop offset="50%" stop-color="#6E8EE8"/>
+      <stop offset="100%" stop-color="#B3A6EE"/>
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="14" fill="#141110"/>
+  <g transform="translate(32 32) scale(0.48) translate(-60 -32)">
+    <path d="M4,46 C12,46 12,26 20,26 C27,26 27,46 34,46 C41,46 41,6 48,6 C54,6 54,58 60,58 C66,58 66,6 72,6 C79,6 79,46 86,46 C93,46 93,26 100,26 C108,26 108,46 116,46"
+          fill="none" stroke="url(#mmWaveFav)" stroke-width="9.5" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+</svg>

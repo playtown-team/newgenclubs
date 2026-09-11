@@ -1,0 +1,1336 @@
+/* ============================================================
+   MINDMUSIC — design system
+   Cada estado de ánimo es un disco. Cada playlist, una funda con
+   varios discos adentro. Abrir una playlist es leer el dorso de
+   la funda: la lista de temas, uno atrás de otro.
+   ============================================================ */
+
+:root {
+  --ink: #191510;
+  --surface: #241e17;
+  --surface-2: #2c2419;
+  --surface-3: #352b1e;
+  --edge: #3c3121;
+  --edge-soft: #2c2419;
+
+  --paper: #f4ead6;
+  --paper-dim: #b7a88e;
+  --paper-faint: #7d7160;
+
+  --brass: #cf9a4f;
+  --brass-hi: #eec37e;
+  --danger: #d1553c;
+
+  /* glass surfaces float over the full-bleed landscape photo */
+  --glass: rgba(30, 25, 19, 0.58);
+  --glass-strong: rgba(24, 20, 15, 0.78);
+  --glass-edge: rgba(244, 234, 214, 0.12);
+  --scrim: linear-gradient(180deg, rgba(15,12,8,.46) 0%, rgba(15,12,8,.4) 22%, rgba(15,12,8,.62) 45%, rgba(15,12,8,.94) 78%, var(--ink) 100%);
+
+  /* signature app-wide landscape (Discover/Perfil/Config chrome) */
+  --app-photo: url('https://images.unsplash.com/photo-1580920824014-54845d91a8ad?auto=format&fit=crop&w=2400&q=75');
+
+  --rl: 26px;
+  --rm: 16px;
+  --rs: 10px;
+
+  --nav-h: 78px;
+  --sidebar-w: 248px;
+
+  --font-display: 'Fraunces', Georgia, 'Times New Roman', serif;
+  --font-body: 'Work Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+
+  font-family: var(--font-body);
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--ink);
+  color: var(--paper);
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  padding-bottom: calc(var(--nav-h) + 16px);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+body.no-nav { padding-bottom: 24px; }
+
+/* ---------- photo hero band ---------- */
+/* Foto real de paisaje a pantalla completa en la franja superior: vive
+   como hermano de .page (no fixed — barato de pintar al hacer scroll) y
+   .page se dibuja encima con z-index, así header + saludo quedan sobre
+   la foto igual que en la referencia. Debajo de la franja, el resto del
+   contenido sigue en el fondo oscuro de siempre. */
+.photo-hero {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 62vh;
+  min-height: 380px;
+  max-height: 620px;
+  background-image: var(--scrim), var(--ambient, var(--app-photo));
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  z-index: 0;
+}
+@media (min-width: 900px) {
+  .photo-hero { left: var(--sidebar-w); height: 46vh; min-height: 340px; }
+}
+@media (min-width: 900px) {
+  body.no-nav { padding-left: 0; }
+}
+
+img { max-width: 100%; display: block; }
+a { color: inherit; text-decoration: none; }
+button { font-family: inherit; cursor: pointer; border: none; background: none; color: inherit; }
+input { font-family: inherit; }
+
+:focus-visible {
+  outline: 2px solid var(--brass-hi);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+.page {
+  position: relative;
+  z-index: 1;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 20px 16px 8px;
+}
+
+/* ---------- header ---------- */
+
+.app-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 4px 0 20px;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+.brand-icon {
+  width: 30px;
+  height: 16px;
+  flex-shrink: 0;
+  display: block;
+}
+.brand-text {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 17px;
+  letter-spacing: 0.2px;
+  white-space: nowrap;
+}
+.brand-text small {
+  display: block;
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-size: 9.5px;
+  color: var(--paper-faint);
+  letter-spacing: 1.8px;
+  text-transform: uppercase;
+  margin-top: 2px;
+}
+
+.header-greet {
+  display: none;
+  font-family: var(--font-display);
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--paper-dim);
+  text-shadow: 0 1px 12px rgba(0,0,0,0.5);
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--paper);
+  font-weight: 600;
+  font-size: 14px;
+  padding: 9px 16px 9px 12px;
+  border-radius: 999px;
+  background: var(--glass);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid var(--glass-edge);
+  transition: color 0.15s ease, border-color 0.15s ease;
+}
+.back-btn svg { width: 18px; height: 18px; }
+.back-btn:hover { color: var(--brass-hi); border-color: var(--brass); }
+
+.avatar {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: var(--glass);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1.5px solid var(--brass);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 15px;
+  color: var(--brass-hi);
+  flex-shrink: 0;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 15px;
+  border-radius: 999px;
+  background: var(--glass);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid var(--glass-edge);
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  font-weight: 500;
+  letter-spacing: 0.8px;
+  color: var(--paper-dim);
+  text-transform: uppercase;
+}
+.badge.center { margin: 0 auto 24px; display: table; }
+
+/* ---------- hero ---------- */
+/* Banda fotográfica de pantalla completa (como el hero de Calm): la foto
+   ambiente ya viene del body (fixed), acá solo se compone el texto encima
+   con una franja de scrim propia para asegurar contraste en el tramo alto. */
+
+.hero {
+  text-align: center;
+  padding: 28px 0 40px;
+  position: relative;
+}
+
+h1.hero-title {
+  font-family: var(--font-display);
+  font-size: 36px;
+  font-weight: 600;
+  font-style: normal;
+  margin: 0 0 14px;
+  line-height: 1.12;
+  letter-spacing: -0.3px;
+  text-shadow: 0 2px 24px rgba(0,0,0,0.35);
+}
+
+.hero-sub {
+  color: var(--paper);
+  font-size: 15.5px;
+  margin: 0 auto;
+  max-width: 420px;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.7), 0 2px 18px rgba(0,0,0,0.55);
+}
+
+.page-title {
+  font-family: var(--font-display);
+  font-size: 28px;
+  font-weight: 600;
+  margin: 0 0 6px;
+  text-shadow: 0 2px 20px rgba(0,0,0,0.3);
+}
+.page-sub {
+  color: var(--paper-dim);
+  font-size: 14px;
+  margin: 0 0 20px;
+  text-shadow: 0 1px 14px rgba(0,0,0,0.45);
+}
+
+/* ---------- search ---------- */
+
+.search-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--glass);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--glass-edge);
+  border-radius: 999px;
+  padding: 15px 18px;
+  margin-bottom: 24px;
+  transition: border-color 0.15s ease;
+}
+.search-bar:focus-within { border-color: var(--brass); }
+.search-bar svg { width: 18px; height: 18px; color: var(--paper-faint); flex-shrink: 0; }
+.search-bar input {
+  flex: 1;
+  background: none;
+  border: none;
+  outline: none;
+  color: var(--paper);
+  font-size: 14px;
+}
+.search-bar input::placeholder { color: var(--paper-faint); }
+
+/* ---------- quick mood picks (home) ---------- */
+
+/* 2x2 chico en mobile, una sola fila de 4 en desktop — mismo ancho total
+   de card en ambos breakpoints (~110px), no ocupan todo el ancho de .page. */
+.quick-moods {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  max-width: 360px;
+  margin: 0 auto 8px;
+}
+@media (min-width: 640px) {
+  .quick-moods { grid-template-columns: repeat(4, 1fr); max-width: 560px; }
+}
+
+/* Card cuadrada y chica por sentimiento: el ícono SVG (línea, no emoji)
+   queda tenue de fondo, con el label apoyado abajo — mismo lenguaje
+   visual que .mood-card, sin foto, para diferenciarse de "Estados". */
+.quick-mood-card {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  border-radius: var(--rm);
+  border: 1px solid var(--glass-edge);
+  background: linear-gradient(155deg, color-mix(in srgb, var(--m-ink, var(--brass)) 30%, var(--surface)), var(--surface-2));
+  overflow: hidden;
+  display: flex;
+  align-items: flex-end;
+  padding: 12px;
+  transition: border-color 0.15s ease, transform 0.15s ease;
+}
+.quick-mood-card:hover { border-color: var(--m-ink, var(--brass)); }
+.quick-mood-card:active { transform: scale(0.97); }
+
+.quick-mood-icon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 68%;
+  height: 68%;
+  transform: translate(-50%, -44%);
+  color: var(--m-ink, var(--brass));
+  opacity: 0.32;
+  pointer-events: none;
+}
+.quick-mood-icon svg { width: 100%; height: 100%; }
+
+.quick-mood-label {
+  position: relative;
+  z-index: 1;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--paper);
+  text-shadow: 0 2px 10px rgba(0,0,0,0.4);
+}
+
+/* ---------- section heading ---------- */
+
+.section-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin: 34px 0 16px;
+}
+.section-head h2 {
+  font-family: var(--font-display);
+  font-size: 21px;
+  font-weight: 600;
+  margin: 0;
+  text-shadow: 0 2px 16px rgba(0,0,0,0.3);
+}
+
+/* Aclaración al costado del título de sección (ej. "Elegí uno solo"). */
+.section-note {
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--paper-faint);
+  flex-shrink: 0;
+}
+
+/* En mood.html la playlist del estado va sola arriba, ancha: funda a la
+   izquierda y datos al costado, para que se lea como el camino principal y
+   no como una tarjeta suelta de grilla. */
+#mood-playlists { display: flex; flex-direction: column; gap: 14px; }
+.playlist-hero {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 14px;
+  background: var(--glass);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--glass-edge);
+  border-radius: var(--rl);
+  transition: border-color 0.15s ease, transform 0.15s ease;
+}
+/* En desktop la pieza no necesita todo el ancho: al estirarse queda vacía. */
+.playlist-hero { max-width: 620px; }
+.playlist-hero:hover { border-color: var(--m-ink, var(--brass)); }
+.playlist-hero:active { transform: scale(0.99); }
+.playlist-hero .cover { width: 104px; flex-shrink: 0; }
+.playlist-hero .meta { min-width: 0; }
+.ph-kind {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--m-ink, var(--brass)) 70%, var(--paper));
+  margin-bottom: 6px;
+}
+.playlist-hero h3 {
+  font-family: var(--font-display);
+  font-size: 19px;
+  font-weight: 600;
+  margin: 0 0 5px;
+  line-height: 1.2;
+}
+.playlist-hero p {
+  font-size: 13px;
+  color: var(--paper-dim);
+  margin: 0 0 8px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.ph-count {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--paper-faint);
+}
+
+/* Los temas sueltos del estado se ven como tarjetas propias (una al lado de
+   la otra), no como una lista: cada uno se elige por su portada. Adentro de
+   mood.html el badge del estado sobra — la página entera ya es ese estado. */
+#mood-songs .cover-mood-badge { display: none; }
+
+/* ---------- mood cards (home) ---------- */
+/* Cards grandes con la foto real del estado de fondo: funcionan como
+   "collections" al estilo Calm — foto + tinte del mood + texto encima. */
+
+.mood-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+.mood-card {
+  position: relative;
+  aspect-ratio: 4 / 5;
+  background-image:
+    linear-gradient(180deg, rgba(15,12,8,0.05) 0%, rgba(15,12,8,0.35) 55%, rgba(15,12,8,0.88) 100%),
+    radial-gradient(ellipse 220px 160px at 15% 0%, color-mix(in srgb, var(--m-ink, var(--brass)) 45%, transparent), transparent 70%),
+    var(--m-photo, none), linear-gradient(155deg, color-mix(in srgb, var(--m-ink, var(--brass)) 30%, var(--surface)), var(--surface-2));
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  border: 1px solid var(--glass-edge);
+  border-radius: var(--rl);
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-end;
+  gap: 4px;
+  overflow: hidden;
+  transition: transform 0.15s ease, border-color 0.15s ease;
+}
+.mood-card:active { transform: scale(0.97); }
+.mood-card:hover { border-color: var(--m-ink, var(--brass)); }
+
+.mood-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 12px;
+  background: rgba(20,16,12,0.55);
+  backdrop-filter: blur(8px);
+  border: 1.5px solid rgba(244,234,214,0.35);
+}
+.mood-icon svg { width: 19px; height: 19px; color: var(--paper); }
+
+.mood-icon-lg { width: 68px; height: 68px; margin-bottom: 0; border-width: 2px; background: rgba(20,16,12,0.5); border-color: var(--m-ink, var(--brass)); }
+.mood-icon-lg svg { width: 30px; height: 30px; color: var(--m-ink, var(--brass)); }
+
+.mood-card h3 { font-family: var(--font-display); font-size: 19px; font-weight: 600; margin: 0; color: var(--paper); }
+.mood-card p { font-size: 12.5px; color: var(--paper-dim); margin: 0 0 14px; }
+
+.pill-btn {
+  padding: 8px 16px;
+  border-radius: 999px;
+  background: var(--m-ink, var(--brass));
+  color: var(--ink);
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.8px;
+}
+
+/* ---------- content type tabs ---------- */
+
+.tabs {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+  scrollbar-width: none;
+}
+.tabs::-webkit-scrollbar { display: none; }
+
+.tab {
+  flex-shrink: 0;
+  padding: 9px 16px;
+  border-radius: 999px;
+  border: 1px solid var(--glass-edge);
+  background: var(--glass);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  color: var(--paper-dim);
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+  transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+.tab.active {
+  background: var(--brass);
+  border-color: var(--brass);
+  color: var(--ink);
+}
+
+/* ---------- cover art: the sleeve system ---------- */
+/* .cover draws a sleeve; .cover-face holds the image.
+   .cover--stack adds two peeking sleeve edges behind, for playlists. */
+
+/* `.cover` es sólo la caja: la funda de adelante (con la imagen) es
+   `.cover-face`, y las fundas de atrás del stack se dibujan detrás de ella,
+   asomando por arriba. Así la foto nunca queda tapada. */
+.cover {
+  position: relative;
+  aspect-ratio: 1 / 1;
+}
+
+.cover-face {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  border-radius: var(--rm);
+  border: 1px solid var(--edge);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* La foto real del estado, teñida con su tinta para que la funda siga
+     leyéndose como parte del sistema. */
+  background-image:
+    linear-gradient(155deg,
+      color-mix(in srgb, var(--m-ink, var(--brass)) 26%, transparent),
+      color-mix(in srgb, var(--ink) 44%, transparent)),
+    var(--m-photo, none),
+    linear-gradient(155deg, color-mix(in srgb, var(--m-ink, var(--brass)) 30%, var(--surface)), var(--surface-2));
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+/* ---------- arte por canción: su foto + la tinta del estado ---------- */
+/* Cada tema tiene su propia foto y esa foto es la portada: encima va apenas
+   un velo con la tinta del estado (para que se lea de qué mood es) y nada
+   más. El recorte y el ángulo del velo salen de songArtVars() en app.js, así
+   una misma canción siempre se ve igual. */
+
+.songart,
+.cover--art .cover-face {
+  background-image:
+    linear-gradient(var(--sa-angle, 140deg),
+      color-mix(in srgb, var(--m-ink, var(--brass)) 30%, transparent) 10%,
+      color-mix(in srgb, var(--ink) 46%, transparent) 95%),
+    radial-gradient(circle at var(--sa-x1, 30%) var(--sa-y1, 26%),
+      color-mix(in srgb, var(--m-ink, var(--brass)) 26%, transparent), transparent 62%),
+    var(--sa-photo, none),
+    linear-gradient(155deg, color-mix(in srgb, var(--m-ink, var(--brass)) 30%, var(--surface)), var(--surface-2));
+  background-size: cover;
+  background-position: center, center, var(--sa-pos, center), center;
+  background-repeat: no-repeat;
+}
+
+.songart {
+  position: relative;
+  flex-shrink: 0;
+  width: 46px;
+  height: 46px;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid var(--glass-edge);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.songart-glyph {
+  position: absolute;
+  top: 3px;
+  right: 3px;
+  width: 13px;
+  height: 13px;
+  color: var(--paper);
+  opacity: 0.5;
+}
+.songart-glyph svg { width: 100%; height: 100%; }
+.songart--lg {
+  width: 116px;
+  height: 116px;
+  border-radius: var(--rm);
+}
+.songart--lg .songart-glyph { top: 9px; right: 9px; width: 22px; height: 22px; }
+
+.cover-mood-badge {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  padding: 3px 9px;
+  border-radius: 999px;
+  background: rgba(25,21,16,0.65);
+  backdrop-filter: blur(3px);
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  font-weight: 500;
+  letter-spacing: 0.4px;
+  color: var(--paper);
+  text-transform: uppercase;
+  z-index: 2;
+}
+
+/* Una playlist son varias fundas: las de atrás asoman por arriba, la de
+   adelante baja unos píxeles para dejarlas ver. */
+.cover--stack .cover-face { top: 10px; }
+.cover--stack::before,
+.cover--stack::after {
+  content: '';
+  position: absolute;
+  height: 16px;
+  border-radius: var(--rm) var(--rm) 0 0;
+  border: 1px solid var(--edge);
+  border-bottom: none;
+  background: color-mix(in srgb, var(--m-ink, var(--brass)) 32%, var(--surface));
+  z-index: 0;
+}
+.cover--stack::before { top: 0; left: 9%; right: 9%; opacity: 0.55; }
+.cover--stack::after { top: 5px; left: 4.5%; right: 4.5%; opacity: 0.85; }
+/* El badge del estado vive fuera de la funda de adelante: se baja para no
+   pisar los lomos (el contador ya va adentro y acompaña solo). */
+.cover--stack .cover-mood-badge { top: 18px; }
+
+/* Pie de la funda de una playlist: la palabra PLAYLIST tiene que leerse de
+   lejos, sin que haya que entrar a la pantalla de detalle para saberlo. */
+.cover-foot {
+  position: absolute;
+  inset: auto 0 0;
+  z-index: 2;
+  display: flex;
+  padding: 26px 8px 8px;
+  background: linear-gradient(180deg, transparent, rgba(15,12,8,0.85));
+}
+
+.cover-kind {
+  flex: 1;
+  padding: 5px 8px;
+  border-radius: 8px;
+  background: var(--m-ink, var(--brass));
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 12.5px;
+  font-weight: 700;
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+  line-height: 1;
+  text-align: center;
+}
+
+/* La funda de un tema suelto no lleva texto: sólo su foto y, en una esquina,
+   el ícono del estado como firma discreta. */
+.cover-glyph {
+  position: absolute;
+  right: 9px;
+  bottom: 9px;
+  z-index: 2;
+  width: 18px;
+  height: 18px;
+  color: var(--paper);
+  opacity: 0.72;
+  filter: drop-shadow(0 1px 4px rgba(0,0,0,0.55));
+}
+.cover-glyph svg { width: 100%; height: 100%; }
+
+.cover-count {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  padding: 3px 8px;
+  border-radius: 999px;
+  background: rgba(25,21,16,0.65);
+  backdrop-filter: blur(3px);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--paper);
+  white-space: nowrap;
+  z-index: 2;
+}
+
+/* ---------- track grid / cards ---------- */
+
+.track-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+.track-card {
+  background: var(--glass);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--glass-edge);
+  border-radius: var(--rm);
+  overflow: hidden;
+  transition: border-color 0.15s ease, transform 0.15s ease;
+}
+.track-card:hover { border-color: var(--m-ink, var(--brass)); }
+.track-card:active { transform: scale(0.98); }
+
+.track-body { padding: 14px; }
+.track-body h4 {
+  font-family: var(--font-display);
+  font-size: 15px;
+  font-weight: 600;
+  margin: 0 0 4px;
+  line-height: 1.3;
+}
+.track-body span {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--paper-faint);
+}
+
+/* ---------- explorar category banners ---------- */
+/* Banners grandes con la foto real del paisaje del estado, tinte del
+   mood y el disco/ícono flotando encima como acento — no como portada. */
+
+.cat-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 18px;
+}
+
+.cat-card {
+  position: relative;
+  border-radius: var(--rl);
+  overflow: hidden;
+  aspect-ratio: 16 / 10;
+  border: 1px solid var(--glass-edge);
+  background-image:
+    linear-gradient(100deg, rgba(15,12,8,0.9) 0%, rgba(15,12,8,0.45) 45%, rgba(15,12,8,0.1) 75%),
+    radial-gradient(ellipse 500px 400px at 90% 30%, color-mix(in srgb, var(--m-ink, var(--brass)) 35%, transparent), transparent 70%),
+    var(--m-photo, none), linear-gradient(135deg, color-mix(in srgb, var(--m-ink, var(--brass)) 26%, var(--surface)), var(--surface-2));
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  display: flex;
+  align-items: center;
+  transition: transform 0.15s ease, border-color 0.15s ease;
+}
+.cat-card:hover { border-color: var(--m-ink, var(--brass)); }
+.cat-card:active { transform: scale(0.98); }
+
+.cat-card .cat-disc {
+  position: absolute;
+  right: -30px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 130px;
+  height: 130px;
+  border-radius: 50%;
+  background: rgba(20,16,12,0.45);
+  backdrop-filter: blur(10px);
+  border: 1.5px solid rgba(244,234,214,0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.9;
+}
+.cat-card .cat-disc svg { width: 46px; height: 46px; color: var(--paper); opacity: 0.8; }
+@media (max-width: 480px) {
+  .cat-card .cat-disc { width: 90px; height: 90px; right: -20px; }
+  .cat-card .cat-disc svg { width: 32px; height: 32px; }
+}
+
+.cat-card .overlay {
+  position: relative;
+  z-index: 1;
+  padding: 24px;
+  max-width: 68%;
+}
+.cat-card h3 { font-family: var(--font-display); font-size: 26px; font-weight: 600; margin: 0; text-shadow: 0 2px 16px rgba(0,0,0,0.4); }
+.cat-card p { font-size: 13.5px; color: var(--paper-dim); margin: 6px 0 0; }
+
+/* ---------- playlist detail: header + stacked tracklist (signature) ---------- */
+
+.playlist-head {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 8px 0 28px;
+}
+.playlist-head .cover { width: 128px; flex-shrink: 0; }
+/* En la portada grande el contador sobra: la tracklist completa está debajo. */
+.playlist-head .cover-count { display: none; }
+/* Encabezado de la pantalla: antes del nombre propio de la selección se lee,
+   grande, qué tipo de contenido es. */
+.playlist-kind {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 30px;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  margin: 0 0 10px;
+  color: color-mix(in srgb, var(--m-ink, var(--brass)) 62%, var(--paper));
+  text-shadow: 0 2px 18px rgba(0,0,0,0.45);
+}
+.playlist-head h1 {
+  font-family: var(--font-display);
+  font-size: 26px;
+  font-weight: 600;
+  margin: 0 0 8px;
+  line-height: 1.15;
+  text-shadow: 0 2px 16px rgba(0,0,0,0.3);
+}
+.playlist-head p { color: var(--paper-dim); font-size: 13.5px; margin: 0; max-width: 460px; }
+@media (max-width: 480px) {
+  .playlist-head { flex-direction: column; align-items: flex-start; text-align: left; }
+  .playlist-head .cover { width: 108px; }
+  .playlist-kind { font-size: 24px; }
+}
+
+.tracklist {
+  display: flex;
+  flex-direction: column;
+  background: var(--glass);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--glass-edge);
+  border-radius: var(--rl);
+  padding: 6px 10px;
+}
+
+.tracklist-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 10px;
+  border-bottom: 1px solid rgba(244,234,214,0.06);
+  transition: background 0.12s ease;
+}
+.tracklist-row:last-child { border-bottom: none; }
+.tracklist-row:hover,
+.tracklist-row:focus-visible { background: rgba(244,234,214,0.06); border-radius: var(--rs); }
+
+.tl-index {
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  color: var(--paper-faint);
+  width: 20px;
+  flex-shrink: 0;
+  text-align: right;
+}
+.tl-play {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: rgba(244,234,214,0.08);
+  border: 1px solid var(--glass-edge);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--brass-hi);
+  flex-shrink: 0;
+}
+.tl-play svg { width: 13px; height: 13px; margin-left: 1px; }
+.tracklist-row:hover .tl-play { background: var(--brass); border-color: var(--brass); color: var(--ink); }
+
+.tl-title {
+  flex: 1;
+  min-width: 0;
+  font-size: 14.5px;
+  font-weight: 600;
+  color: var(--paper);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.tl-duration {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--paper-faint);
+  flex-shrink: 0;
+}
+
+/* En pantallas angostas el arte ocupa el lugar del botón: la fila entera ya
+   es tocable, así que el play redundante se va. */
+@media (max-width: 430px) {
+  .tracklist-row .tl-play { display: none; }
+}
+
+/* ---------- cola del player (sólo al entrar desde una playlist) ---------- */
+/* Reusa la tracklist de playlist.html, pero rotada: la primera fila es el
+   tema que suena y abajo quedan los que vienen. Las filas son <button>
+   porque cambian de canción in situ, sin navegar. */
+
+.queue .section-head { margin: 28px 0 14px; }
+.queue .section-head h2 {
+  font-size: 19px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.queue-link {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--brass-hi);
+  flex-shrink: 0;
+  margin-left: 14px;
+}
+.queue-link:hover { text-decoration: underline; }
+
+.queue .tracklist-row {
+  width: 100%;
+  background: none;
+  border-left: 0;
+  border-right: 0;
+  border-top: 0;
+  font: inherit;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.queue .tracklist-row.is-current .tl-title { color: var(--brass-hi); }
+.queue .tracklist-row.is-current .tl-play {
+  background: var(--brass);
+  border-color: var(--brass);
+  color: var(--ink);
+}
+.queue .tracklist-row.is-current .tl-index {
+  color: var(--brass-hi);
+  display: flex;
+  justify-content: flex-end;
+}
+.queue .tracklist-row.is-current .tl-index svg { width: 15px; height: 15px; }
+/* Las barritas laten mientras suena y quedan quietas en pausa. */
+.queue .tracklist-row.is-current .tl-index svg rect {
+  transform-origin: center;
+  animation: queue-eq 1.1s ease-in-out infinite;
+}
+.queue .tracklist-row.is-current .tl-index svg rect:nth-child(2) { animation-delay: 0.22s; }
+.queue .tracklist-row.is-current .tl-index svg rect:nth-child(3) { animation-delay: 0.44s; }
+.queue .tracklist-row.is-current.is-paused .tl-index svg rect { animation-play-state: paused; }
+
+@keyframes queue-eq {
+  0%, 100% { transform: scaleY(0.55); }
+  50% { transform: scaleY(1.25); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .queue .tracklist-row.is-current .tl-index svg rect { animation: none; }
+}
+
+/* ---------- player ---------- */
+
+.player-wrap {
+  text-align: center;
+  padding: 32px 24px 36px;
+  margin-top: 8px;
+  background: var(--glass);
+  backdrop-filter: blur(22px);
+  -webkit-backdrop-filter: blur(22px);
+  border: 1px solid var(--glass-edge);
+  border-radius: var(--rl);
+}
+
+/* Visual del player: banda de ondas a sangre en la parte superior de la
+   tarjeta. El canvas lo dibuja app.js (waveViz) — acá sólo el contenedor,
+   el degradé de fondo teñido con la tinta del mood y el velo que funde la
+   banda con el vidrio de la tarjeta. */
+.player-visual {
+  position: relative;
+  height: 230px;
+  margin: -32px -24px 26px;
+  border-radius: var(--rl) var(--rl) 0 0;
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse 130% 80% at 50% 88%,
+      color-mix(in srgb, var(--m-ink, var(--brass)) 20%, transparent), transparent 70%),
+    linear-gradient(180deg,
+      color-mix(in srgb, var(--m-ink, var(--brass)) 6%, transparent),
+      transparent 55%);
+}
+
+.wave-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* Funde el borde inferior de las ondas con la tarjeta, para que la banda
+   no corte en seco. */
+.wave-veil {
+  position: absolute;
+  inset: auto 0 0;
+  height: 70px;
+  pointer-events: none;
+  background: linear-gradient(180deg, transparent, color-mix(in srgb, var(--ink) 78%, transparent));
+}
+
+@media (min-width: 560px) {
+  .player-visual { height: 260px; }
+}
+
+
+/* El arte del tema que suena se apoya sobre el borde inferior de la banda de
+   ondas, como una funda apoyada contra el equipo. */
+.player-art {
+  display: flex;
+  justify-content: center;
+  margin: -84px 0 16px;
+  position: relative;
+  z-index: 2;
+}
+.player-art .songart {
+  box-shadow: 0 10px 30px rgba(0,0,0,0.45);
+  border-color: rgba(244,234,214,0.18);
+}
+
+.player-title { font-family: var(--font-display); font-size: 22px; font-weight: 600; margin: 0 0 8px; }
+.player-desc { color: var(--paper-dim); font-size: 14px; max-width: 380px; margin: 0 auto 28px; }
+
+.progress-wrap { max-width: 420px; margin: 0 auto 8px; }
+.progress-track {
+  height: 4px;
+  border-radius: 2px;
+  background: var(--edge);
+  position: relative;
+  overflow: hidden;
+}
+.progress-fill {
+  position: absolute;
+  inset: 0;
+  width: 0%;
+  background: var(--brass);
+  border-radius: 2px;
+}
+.progress-times {
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--paper-faint);
+  margin-top: 8px;
+}
+
+.controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 22px;
+  margin-top: 28px;
+}
+.ctrl-btn {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--paper-dim);
+}
+.ctrl-btn svg { width: 20px; height: 20px; }
+.ctrl-btn.active { color: var(--brass-hi); }
+
+.play-main {
+  width: 66px;
+  height: 66px;
+  border-radius: 50%;
+  background: var(--brass);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+}
+.play-main svg { width: 26px; height: 26px; color: var(--ink); margin-left: 3px; }
+.play-main.playing svg { margin-left: 0; }
+
+/* ---------- perfil / config ---------- */
+
+.form-block {
+  background: var(--glass);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--glass-edge);
+  border-radius: var(--rl);
+  padding: 22px;
+  margin-bottom: 16px;
+}
+.form-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 0;
+  border-bottom: 1px solid rgba(244,234,214,0.08);
+}
+.form-row:last-child { border-bottom: none; }
+.form-row .label { font-size: 13.5px; color: var(--paper-dim); }
+.form-row .value { font-size: 14px; font-weight: 600; }
+.edit-link { color: var(--brass-hi); font-size: 13px; font-weight: 700; }
+
+.profile-head {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 0 28px;
+  text-align: center;
+}
+.profile-head .avatar { width: 76px; height: 76px; font-size: 26px; }
+.profile-head h2 { margin: 0; font-family: var(--font-display); font-weight: 600; font-size: 20px; text-shadow: 0 2px 16px rgba(0,0,0,0.35); }
+.profile-head p { margin: 0; color: var(--paper-faint); font-size: 13px; text-shadow: 0 1px 14px rgba(0,0,0,0.5); }
+
+.danger-btn {
+  width: 100%;
+  padding: 14px;
+  border-radius: var(--rm);
+  background: rgba(209,85,60,0.1);
+  border: 1px solid rgba(209,85,60,0.35);
+  color: var(--danger);
+  font-weight: 700;
+  font-size: 14px;
+}
+
+/* ---------- modal (edit) ---------- */
+
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(15,12,8,0.7);
+  display: none;
+  align-items: flex-end;
+  justify-content: center;
+  z-index: 50;
+}
+.modal-backdrop.open { display: flex; }
+.modal-sheet {
+  background: var(--glass-strong);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid var(--glass-edge);
+  border-radius: 24px 24px 0 0;
+  padding: 24px;
+  width: 100%;
+  max-width: 480px;
+}
+.modal-sheet h3 { margin: 0 0 16px; font-family: var(--font-display); font-weight: 600; font-size: 18px; }
+.modal-sheet input {
+  width: 100%;
+  padding: 14px;
+  border-radius: var(--rs);
+  background: var(--ink);
+  border: 1px solid var(--edge);
+  color: var(--paper);
+  font-size: 15px;
+  margin-bottom: 16px;
+  outline: none;
+}
+.modal-sheet input:focus { border-color: var(--brass); }
+.modal-actions { display: flex; gap: 10px; }
+.modal-actions button {
+  flex: 1;
+  padding: 13px;
+  border-radius: var(--rs);
+  font-weight: 700;
+  font-size: 14px;
+}
+.modal-actions .cancel { background: var(--ink); color: var(--paper-dim); }
+.modal-actions .save { background: var(--brass); color: var(--ink); }
+
+@media (min-width: 640px) {
+  .modal-backdrop { align-items: center; }
+  .modal-sheet { border-radius: 24px; }
+}
+
+/* ---------- toast ---------- */
+
+.toast {
+  position: fixed;
+  bottom: calc(var(--nav-h) + 20px);
+  left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  background: var(--surface-2);
+  border: 1px solid var(--edge);
+  padding: 12px 20px;
+  border-radius: 999px;
+  font-size: 13px;
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.25s ease;
+  z-index: 60;
+  white-space: nowrap;
+}
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+/* ---------- skeleton / spinner ---------- */
+
+.skeleton {
+  background: linear-gradient(90deg, var(--surface) 25%, var(--surface-3) 50%, var(--surface) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: var(--rs);
+}
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+.skel-thumb { aspect-ratio: 1/1; width: 100%; }
+.skel-line { height: 12px; border-radius: 4px; margin-top: 8px; }
+.skel-line.short { width: 55%; }
+
+.spinner {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 3px solid var(--edge);
+  border-top-color: var(--brass);
+  animation: spin 0.8s linear infinite;
+  margin: 60px auto;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.loading-wrap { display: flex; flex-direction: column; align-items: center; padding: 40px 0; color: var(--paper-faint); font-size: 13px; }
+
+.empty-state { text-align: center; color: var(--paper-faint); font-size: 13.5px; padding: 40px 0; }
+
+/* ---------- bottom nav (mobile) / sidebar (desktop) ---------- */
+
+.app-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: var(--nav-h);
+  background: var(--glass-strong);
+  backdrop-filter: blur(22px);
+  -webkit-backdrop-filter: blur(22px);
+  border-top: 1px solid var(--glass-edge);
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  z-index: 40;
+  padding-bottom: env(safe-area-inset-bottom, 0);
+}
+
+.nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  color: var(--paper-faint);
+  font-size: 10.5px;
+  font-weight: 600;
+  padding: 6px 14px;
+  border-radius: 999px;
+}
+.nav-item svg { width: 20px; height: 20px; }
+.nav-item.active { color: var(--ink); background: var(--brass); }
+.nav-item.active svg { color: var(--ink); }
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  flex: 1;
+  gap: 4px;
+}
+
+.nav-top, .nav-bottom { display: none; }
+
+@media (min-width: 900px) {
+  body { padding-bottom: 0; padding-left: var(--sidebar-w); }
+  .page { padding-left: 24px; padding-right: 24px; max-width: 1200px; }
+
+  .app-nav {
+    top: 0;
+    bottom: 0;
+    right: auto;
+    width: var(--sidebar-w);
+    height: 100vh;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
+    border-top: none;
+    border-right: 1px solid var(--glass-edge);
+    padding: 24px 16px;
+    gap: 6px;
+  }
+  .nav-top { display: block; padding: 0 8px 24px; }
+  .nav-bottom { display: block; margin-top: auto; padding-top: 16px; border-top: 1px solid var(--glass-edge); }
+  .nav-links { flex: none; flex-direction: column; justify-content: flex-start; align-items: stretch; gap: 4px; }
+  .nav-item { flex-direction: row; justify-content: flex-start; gap: 12px; font-size: 14px; padding: 12px 14px; border-radius: var(--rs); }
+
+  .nav-user { display: flex; align-items: center; gap: 10px; padding: 8px; }
+  .nav-user-name { font-size: 13.5px; font-weight: 700; margin: 0; }
+  .nav-user-sub { font-size: 11.5px; color: var(--paper-faint); margin: 0; }
+
+  .header-greet { display: block; }
+  .mood-grid { grid-template-columns: repeat(4, 1fr); }
+  .track-grid { grid-template-columns: repeat(4, 1fr); }
+  .cat-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (min-width: 560px) and (max-width: 899px) {
+  .mood-grid { grid-template-columns: repeat(4, 1fr); }
+  .track-grid { grid-template-columns: repeat(3, 1fr); }
+}
+
+@media (min-width: 720px) {
+  .cat-grid { grid-template-columns: repeat(2, 1fr); }
+}
