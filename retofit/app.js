@@ -4,7 +4,7 @@
 //   RETOFIT — app.js
 // ═══════════════════════════════════════
 
-const API_BASE = 'https://contenidos.vip/retofit/wp-json/api/v3/articles';
+const API_BASE = 'https://contenidos.vip/retofit/wp-json/api/v3/articles?countr';
 
 // ═══════ EXERCISE ANIMATIONS ═══════
 const ANIMS = {
@@ -245,7 +245,7 @@ async function fetchChallengesList() {
 }
 
 async function fetchContentList(page = 1) {
-  const json = await apiFetch(`${API_BASE}/category/content?page=${page}`);
+  const json = await apiFetch(`${API_BASE}/category/content?page=${page}&pais=`);
   return { data: json.data || [], next: json.next || null };
 }
 
@@ -1257,7 +1257,7 @@ function initStartPage() {
 function getCountry() {
   const parts = location.pathname.split('/').filter(Boolean);
 
-  const countries = ['ar', 'cl', 'pe'];
+  const countries = ['ar', 'cl', 'py'];
 
   return parts.find(part => countries.includes(part)) || null;
 }

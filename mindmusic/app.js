@@ -1116,7 +1116,7 @@ function saveEditModal() {
 function getCountry() {
   const parts = location.pathname.split('/').filter(Boolean);
 
-  const countries = ['ar', 'cl', 'pe'];
+  const countries = ['ar', 'cl', 'py'];
 
   return parts.find(part => countries.includes(part)) || null;
 }

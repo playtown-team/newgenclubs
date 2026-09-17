@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Mis Gastos en Orden — Inicio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<link rel="icon" type="image/svg+xml" href="assets/brand/logo-mark.svg">
+<link rel="apple-touch-icon" href="assets/brand/apple-touch-icon.png">
+<meta name="theme-color" content="#eaf3f1">
+</head>
+<body>
+
+<header class="app-header">
+  <div class="brand-mark"><img class="brand-icon" src="assets/brand/logo-mark.svg" alt="" aria-hidden="true"><div class="brand-logo">Mis Gastos en Orden<small>by PLAYTOWN</small></div></div>
+</header>
+
+<div id="home-container" class="page">
+  <div class="section-head" style="margin-top:6px">
+    <h2 class="section-head-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18"/><path d="M8 3v4M16 3v4"/><path d="M8.5 15l2 2 4-4"/></svg>
+      <span>Resumen del día</span>
+    </h2>
+  </div>
+  <div class="summary-list" id="home-summary"></div>
+
+  <div id="home-challenge" hidden></div>
+
+  <div class="calm-card">
+    <svg class="calm-card-deco" viewBox="0 0 160 160" fill="none" aria-hidden="true">
+      <path d="M118 26a58 58 0 1 0 0 108 46 46 0 0 1 0-108Z" stroke="var(--cyan)" stroke-width="5" opacity="0.22"/>
+      <circle cx="132" cy="30" r="2.4" fill="var(--cyan)" opacity="0.3"/>
+      <circle cx="146" cy="52" r="1.8" fill="var(--cyan)" opacity="0.24"/>
+    </svg>
+    <p class="calm-eyebrow">Dosis de Calma</p>
+    <p class="calm-quote" id="home-calm-quote">""</p>
+  </div>
+
+  <div class="featured-tip" id="home-featured-tip" hidden></div>
+
+  <div class="cat-filter" id="home-cat-filter"></div>
+
+  <div class="tips-list" id="home-tips"></div>
+</div>
+
+<nav class="app-nav">
+  <div class="nav-top"><div class="brand-mark"><img class="brand-icon" src="assets/brand/logo-mark.svg" alt="" aria-hidden="true"><div class="brand-logo">Mis Gastos en Orden<small>by PLAYTOWN</small></div></div></div>
+  <div class="nav-links">
+    <a class="nav-item" id="nav-home" href="index.html">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg>
+      <span>Inicio</span>
+    </a>
+    <a class="nav-item" id="nav-registros" href="registros.html">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6h11M9 12h11M9 18h11"/><path d="M4 6h.01M4 12h.01M4 18h.01"/></svg>
+      <span>Vencimientos</span>
+    </a>
+    <a class="nav-item" id="nav-retos" href="retos.html">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.2" fill="currentColor"/></svg>
+      <span>Retos</span>
+    </a>
+    <a class="nav-item" id="nav-perfil" href="perfil.html">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.5-7 8-7s8 3 8 7"/></svg>
+      <span>Perfil</span>
+    </a>
+  </div>
+  <div class="nav-bottom">
+    <a class="nav-user" href="perfil.html">
+      <div class="avatar js-avatar">I</div>
+      <div>
+        <p class="nav-user-name">Invitado</p>
+        <p class="nav-user-sub">Miembro Playtown</p>
+      </div>
+    </a>
+  </div>
+</nav>
+
+<script src="app-data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

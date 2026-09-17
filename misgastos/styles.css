@@ -1,0 +1,1512 @@
+/* ============================================================
+   MIS GASTOS EN ORDEN — design system
+   Wallet teal: fondo menta muy suave, cards blancas flotando,
+   acento turquesa vibrante como color de marca, tipografía
+   redondeada y amigable en titulares (nada de alarma financiera).
+   El anillo de vencimiento de cada gasto fijo (ver app.js) sigue
+   siendo la seña de identidad — sólo cambia la paleta que lo viste.
+   Los montos y fechas se escriben en mono, como una cartola.
+   ============================================================ */
+
+:root {
+  --bg: #eaf3f1;
+  --card: #ffffff;
+  --ink: #16221f;
+  --ink-dim: #5b6d69;
+  --ink-faint: #7c8d89;
+  --border: #dbe8e4;
+  --border-soft: #e8f1ee;
+
+  --cyan: #0f9b8f;
+  --cyan-ink: #0a685f;
+  --cyan-pastel: #e0f5f2;
+  --violet: #6952b3;
+  --violet-pastel: #ece8fb;
+  --blue: #2f66ac;
+  --blue-pastel: #e6eff9;
+  --green: #177a4a;
+  --green-pastel: #e3f6ec;
+  --orange: #b3720f;
+  --orange-pastel: #fbeed9;
+  --red: #b3392b;
+  --red-pastel: #fbe3e0;
+
+  --nav-bg: #0c433d;
+  --nav-fg: rgba(255,255,255,0.62);
+  --nav-fg-active: #ffffff;
+  --nav-active-bg: rgba(255,255,255,0.16);
+
+  --rl: 14px;
+  --rm: 12px;
+  --rs: 10px;
+
+  --header-h: 68px;
+  --nav-h: 64px;
+  --sidebar-w: 252px;
+
+  --shadow-card: 0 2px 6px rgba(16,34,31,0.04), 0 20px 40px -8px rgba(16,34,31,0.18);
+  --shadow-card-sm: 0 2px 4px rgba(16,34,31,0.04), 0 10px 24px -6px rgba(16,34,31,0.14);
+  --shadow-pop: 0 24px 64px rgba(16,34,31,0.24);
+  --shadow-nav: 0 18px 40px rgba(12,67,61,0.4);
+
+  --font-display: 'Sora', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  /* Sora es ancha por defecto; el tracking negativo es lo que la hace leer
+     compacta y moderna en títulos. Va junto a --font-display, siempre. */
+  --tracking-display: -0.02em;
+  --font-mono: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+
+  font-family: var(--font-body);
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  padding-top: var(--header-h);
+  padding-bottom: calc(var(--nav-h) + 42px);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+body.no-nav { padding-bottom: 24px; }
+
+img { max-width: 100%; display: block; }
+a { color: inherit; text-decoration: none; }
+button { font-family: inherit; cursor: pointer; border: none; background: none; color: inherit; }
+input, select, textarea { font-family: inherit; }
+
+:focus-visible {
+  outline: 2px solid var(--cyan);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+.page {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 20px 16px 8px;
+}
+
+/* ---------- fixed header ---------- */
+
+.app-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: var(--header-h);
+  background: rgba(234,243,241,0.88);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+  z-index: 40;
+}
+
+.brand-mark {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Isotipo oficial (barras + check + moneda). Vive en assets/brand/logo-mark.svg
+   y se repite en cada header/sidebar; el favicon usa el mismo archivo. */
+.brand-icon {
+  width: 28px;
+  height: 28px;
+  flex-shrink: 0;
+  display: block;
+}
+
+/* La luna de hoy se calcula en renderMoonGlyphs() (app.js). Desde que existe
+   el isotipo, ya no acompaña al wordmark en header/sidebar: queda como avatar
+   del saludo en Inicio (.moon-glyph--lg), que es donde el ciclo lunar se lee
+   como "la plata también tiene fases". */
+.moon-glyph {
+  position: relative;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  overflow: hidden;
+  flex-shrink: 0;
+  background: #f6f0e3;
+  border: 1px solid var(--border);
+}
+.moon-shadow {
+  position: absolute;
+  inset: 0;
+  background: var(--ink);
+  border-radius: 50%;
+}
+
+.brand-logo {
+  font-family: var(--font-display);
+  letter-spacing: var(--tracking-display);
+  font-weight: 600;
+  font-size: 15.5px;
+  color: var(--ink);
+  line-height: 1.15;
+}
+.brand-logo small {
+  display: block;
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-size: 10px;
+  color: var(--ink-faint);
+  letter-spacing: 1.6px;
+  text-transform: uppercase;
+  margin-top: 2px;
+}
+
+/* ---------- header greeting (home) ---------- */
+/* Reemplaza al brand-mark en Inicio: la marca lunar hace de avatar y el
+   saludo ocupa el lugar del nombre de la app, como el "Hi! Ismail" de la
+   referencia — sin perder el mecanismo de la luna del día. */
+.header-greet {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+}
+.moon-glyph--lg {
+  width: 38px;
+  height: 38px;
+  border: none;
+  box-shadow: 0 2px 6px rgba(16,34,31,0.12);
+}
+.header-greet-text { line-height: 1.2; }
+.greet-label {
+  margin: 0;
+  font-size: 11.5px;
+  color: var(--ink-faint);
+  font-weight: 600;
+}
+.greet-name {
+  margin: 0;
+  font-family: var(--font-display);
+  letter-spacing: var(--tracking-display);
+  font-weight: 600;
+  font-size: 16.5px;
+  color: var(--ink);
+}
+
+.assistant-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--cyan);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 6px 16px rgba(15,155,143,0.35);
+  transition: transform 0.15s ease;
+}
+.assistant-btn:active { transform: scale(0.94); }
+.assistant-btn svg { width: 18px; height: 18px; }
+
+.back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--ink-dim);
+  font-weight: 600;
+  font-size: 14px;
+}
+.back-btn svg { width: 18px; height: 18px; }
+.back-btn:hover { color: var(--ink); }
+
+/* ---------- page titles ---------- */
+
+.page-title {
+  font-family: var(--font-display);
+  letter-spacing: var(--tracking-display);
+  font-size: 26px;
+  font-weight: 700;
+  margin: 4px 0 6px;
+}
+.page-sub {
+  color: var(--ink-dim);
+  font-size: 14px;
+  margin: 0 0 22px;
+}
+
+.section-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin: 28px 0 12px;
+}
+.section-head h2 {
+  font-family: var(--font-display);
+  letter-spacing: var(--tracking-display);
+  font-size: 17px;
+  font-weight: 700;
+  margin: 0;
+}
+.section-head h2.section-head-icon {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.section-head-icon svg {
+  width: 17px;
+  height: 17px;
+  flex-shrink: 0;
+  color: var(--cyan-ink);
+}
+.section-sub {
+  color: var(--ink-dim);
+  font-size: 13.5px;
+  margin: -8px 0 16px;
+}
+
+/* ---------- summary cards (Resumen del día) ---------- */
+/* Una sola card agrupada con filas divididas adentro — como el listado de
+   transacciones de la referencia — en vez de una card suelta por aviso. */
+
+.summary-list {
+  display: block;
+  background: var(--card);
+  border-radius: var(--rl);
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
+  padding: 4px 0;
+}
+.summary-list .empty-state { padding: 34px 22px; }
+.summary-list .skeleton { margin: 10px 16px; height: 56px; border-radius: var(--rs); }
+
+.summary-card {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px 16px;
+  background: none;
+  border: none;
+  padding: 14px 22px;
+  transition: background 0.15s ease;
+}
+.summary-card:active { background: var(--border-soft); }
+.summary-card + .summary-card { border-top: 1px solid var(--border-soft); }
+.summary-card.is-overdue { background: linear-gradient(90deg, var(--red-pastel), var(--card) 70%); }
+
+.summary-card-top { display: flex; align-items: center; gap: 16px; flex: 1 1 220px; min-width: 0; }
+.summary-card-bottom { display: flex; align-items: center; justify-content: flex-end; gap: 10px; flex-wrap: wrap; flex-shrink: 0; }
+
+/* ---------- anillo de ciclo (vencimientos) ---------- */
+/* Barrido real: día 1 del mes = casi vacío, día de vencimiento = anillo
+   completo. Vencido tiñe de rojo con un pulso lento; pagado cierra en
+   verde con un check superpuesto. Ver VENC_RING_COLOR en app.js. */
+
+.venc-icon {
+  position: relative;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.venc-ring { position: absolute; inset: 0; }
+.venc-ring-track { fill: none; stroke: var(--border); stroke-width: 2.5px; }
+.venc-ring-fill {
+  fill: none;
+  stroke-width: 2.5px;
+  stroke-linecap: round;
+  transition: stroke-dasharray 0.4s ease;
+}
+.venc-ring--pulse .venc-ring-fill { animation: venc-pulse 2.8s ease-in-out infinite; }
+@keyframes venc-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.45; }
+}
+.venc-check {
+  position: absolute;
+  right: -2px;
+  bottom: -2px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--green);
+  color: #fff;
+  border: 2px solid var(--card);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.venc-check svg { width: 8px; height: 8px; }
+
+.summary-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.summary-icon svg { width: 22px; height: 22px; }
+.summary-icon.cyan { background: var(--cyan-pastel); color: var(--cyan-ink); }
+.summary-icon.violet { background: var(--violet-pastel); color: var(--violet); }
+.summary-icon.green { background: var(--green-pastel); color: var(--green); }
+.summary-icon.red { background: var(--red-pastel); color: var(--red); }
+.summary-icon.blue { background: var(--blue-pastel); color: var(--blue); }
+.summary-icon.orange { background: var(--orange-pastel); color: var(--orange); }
+.summary-icon.grey { background: var(--border-soft); color: var(--ink-faint); }
+
+.summary-body { flex: 1; min-width: 0; }
+.summary-body h3 {
+  font-family: var(--font-display);
+  letter-spacing: var(--tracking-display);
+  font-size: 15px;
+  font-weight: 600;
+  margin: 0 0 2px;
+}
+.summary-cat {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--ink-faint);
+}
+.summary-body p {
+  font-size: 12.5px;
+  color: var(--ink-dim);
+  margin: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  font-weight: 600;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+  margin-left: 8px;
+  vertical-align: middle;
+}
+.status-pill.overdue { background: var(--red); color: #fff; }
+.status-pill.due-soon { background: var(--cyan-pastel); color: var(--cyan-ink); }
+.summary-body p .status-pill:first-child { margin-left: 0; }
+
+.chevron {
+  width: 18px;
+  height: 18px;
+  color: var(--ink-faint);
+  flex-shrink: 0;
+}
+
+.summary-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+.summary-pay-btn {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  height: 34px;
+  padding: 0 13px 0 10px;
+  border-radius: 999px;
+  background: var(--green);
+  color: #fff;
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: 10px;
+  letter-spacing: 0.2px;
+  text-transform: uppercase;
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: transform 0.15s ease, filter 0.15s ease;
+}
+.summary-pay-btn svg { width: 15px; height: 15px; flex-shrink: 0; }
+.summary-pay-btn:hover { filter: brightness(1.08); }
+.summary-pay-btn:active { transform: scale(0.95); }
+
+.summary-more-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--ink-faint);
+  flex-shrink: 0;
+}
+.summary-more-btn svg { width: 15px; height: 15px; }
+.summary-more-btn:hover { background: var(--border-soft); color: var(--ink); }
+
+/* ---------- filtro de categorías (Consejos Conscientes) ---------- */
+
+.cat-filter {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  margin: 18px 0 18px;
+  padding-bottom: 2px;
+  scrollbar-width: none;
+}
+.cat-filter::-webkit-scrollbar { display: none; }
+.cat-chip {
+  flex-shrink: 0;
+  padding: 7px 14px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--card);
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  color: var(--ink-dim);
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+.cat-chip.active {
+  background: var(--cyan);
+  border-color: var(--cyan);
+  color: #fff;
+}
+
+/* ---------- dosis de calma ---------- */
+
+.calm-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--rl);
+  padding: 24px 22px;
+  margin: 26px 0 4px;
+  background: linear-gradient(135deg, #dff6f1, #eef7f2 55%, #f2f0fb);
+  border: 1px solid rgba(15,155,143,0.18);
+}
+.calm-card-deco {
+  position: absolute;
+  z-index: 0;
+  top: -18px;
+  right: -22px;
+  width: 150px;
+  height: 150px;
+  pointer-events: none;
+}
+.calm-eyebrow {
+  position: relative;
+  z-index: 1;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 1.6px;
+  text-transform: uppercase;
+  color: var(--cyan-ink);
+  margin: 0 0 12px;
+}
+.calm-quote {
+  position: relative;
+  z-index: 1;
+  font-family: var(--font-display);
+  letter-spacing: var(--tracking-display);
+  font-style: normal;
+  font-weight: 600;
+  font-size: 19px;
+  line-height: 1.4;
+  margin: 0;
+  color: var(--ink);
+}
+
+/* ---------- reto de la semana ---------- */
+/* La pieza más llamativa de la app, a propósito: una card llena de color
+   contra el fondo menta y las cards blancas, para que el reto no se lea como
+   un aviso de vencimiento más. Violeta mientras corre, verde al finalizarlo —
+   y nunca desaparece: se queda visible toda la semana.
+   El check del botón hereda la gramática del anillo de vencimiento: vacío
+   mientras hay algo pendiente, cerrado y en verde cuando ya está. */
+
+.challenge-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--rl);
+  padding: 24px 22px 20px;
+  margin: 26px 0 4px;
+  color: #fff;
+  background: linear-gradient(135deg, #7b62cf 0%, #5b46a3 55%, #43307f 100%);
+  box-shadow: 0 2px 6px rgba(16,34,31,0.06), 0 22px 44px -10px rgba(67,48,127,0.5);
+  transition: background 0.25s ease, box-shadow 0.25s ease;
+}
+/* Halo suave, puramente decorativo: da profundidad sin sumar un asset. */
+.challenge-card::after {
+  content: '';
+  position: absolute;
+  top: -70px;
+  right: -50px;
+  width: 190px;
+  height: 190px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,255,255,0.22), rgba(255,255,255,0) 70%);
+  pointer-events: none;
+}
+.challenge-card.is-done {
+  background: linear-gradient(135deg, #239c62 0%, #147a4a 55%, #0c5836 100%);
+  box-shadow: 0 2px 6px rgba(16,34,31,0.06), 0 22px 44px -10px rgba(12,88,54,0.45);
+}
+#retos-current .challenge-card { margin-top: 4px; }
+
+.challenge-head {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 13px;
+}
+.challenge-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.92);
+}
+.challenge-eyebrow svg { width: 15px; height: 15px; flex-shrink: 0; }
+.challenge-week {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: rgba(255,255,255,0.66);
+  white-space: nowrap;
+}
+.challenge-title {
+  position: relative;
+  font-family: var(--font-display);
+  letter-spacing: var(--tracking-display);
+  font-size: 22px;
+  font-weight: 700;
+  margin: 0 0 8px;
+}
+.challenge-desc {
+  position: relative;
+  margin: 0 0 18px;
+  font-size: 14px;
+  line-height: 1.5;
+  color: rgba(255,255,255,0.84);
+  max-width: 46ch;
+}
+.challenge-foot {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.challenge-btn {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  height: 42px;
+  padding: 0 20px 0 10px;
+  border-radius: 999px;
+  background: #fff;
+  color: #43307f;
+  font-weight: 700;
+  font-size: 13.5px;
+  transition: transform 0.15s ease;
+}
+.challenge-btn:active { transform: scale(0.97); }
+.challenge-check {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid rgba(67,48,127,0.28);
+  color: transparent;
+  transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+.challenge-check svg { width: 13px; height: 13px; }
+.challenge-btn:hover .challenge-check { border-color: rgba(67,48,127,0.5); }
+.challenge-card.is-done .challenge-btn { color: #0c5836; }
+.challenge-card.is-done .challenge-check {
+  background: var(--green);
+  border-color: var(--green);
+  color: #fff;
+}
+.challenge-link {
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  font-weight: 600;
+  color: rgba(255,255,255,0.78);
+}
+.challenge-link:hover { color: #fff; }
+
+/* ---------- historial de retos (página Retos) ---------- */
+/* Los que se pasaron no van en rojo: la app no reta al usuario, sólo deja
+   el registro. Gris apagado, misma lógica que el "sin alarma" del resto. */
+
+.section-count {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ink-faint);
+}
+
+.challenge-list {
+  display: block;
+  background: var(--card);
+  border-radius: var(--rl);
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
+  padding: 4px 0;
+}
+.challenge-list .empty-state { padding: 30px 22px; }
+
+.challenge-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 16px 22px;
+}
+.challenge-row + .challenge-row { border-top: 1px solid var(--border-soft); }
+.challenge-row-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  margin-top: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.challenge-row-icon svg { width: 15px; height: 15px; }
+.challenge-row-icon.is-done { background: var(--green-pastel); color: var(--green); }
+.challenge-row-icon.is-missed { background: var(--border-soft); color: var(--ink-faint); }
+
+.challenge-row-body { flex: 1; min-width: 0; }
+.challenge-row-top {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 3px;
+}
+.challenge-row-top h4 { margin: 0; font-size: 14.5px; font-weight: 700; }
+.challenge-row-body p {
+  margin: 0 0 6px;
+  font-size: 13px;
+  line-height: 1.45;
+  color: var(--ink-dim);
+}
+.challenge-row-week {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--ink-faint);
+}
+
+/* ---------- tip de la semana (destacado, fijo, fuera del grid) ---------- */
+
+.featured-tip {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--rl);
+  padding: 22px 22px 20px;
+  margin: 18px 0 22px;
+  background: linear-gradient(135deg, #e4f6f2, #eef5ff 55%, #f4f0fb);
+  border: 1px solid rgba(105,82,179,0.22);
+}
+.featured-tip-deco {
+  position: absolute;
+  z-index: 0;
+  top: -14px;
+  right: -20px;
+  width: 130px;
+  height: 130px;
+  pointer-events: none;
+}
+.featured-tip-body {
+  position: relative;
+  z-index: 1;
+}
+.featured-tip-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 1.6px;
+  text-transform: uppercase;
+  color: var(--violet);
+  margin: 0 0 12px;
+}
+.featured-tip h3 {
+  font-family: var(--font-display);
+  letter-spacing: var(--tracking-display);
+  font-size: 21px;
+  font-weight: 600;
+  line-height: 1.25;
+  margin: 0 0 10px;
+  color: var(--ink);
+}
+.featured-tip-excerpt {
+  font-size: 14.5px;
+  font-weight: 600;
+  color: var(--ink);
+  line-height: 1.5;
+  margin: 0 0 12px;
+}
+.featured-tip-p {
+  font-size: 13.5px;
+  color: var(--ink-dim);
+  line-height: 1.6;
+  margin: 0 0 10px;
+}
+.featured-tip-p:last-of-type { margin-bottom: 14px; }
+.featured-tip-actions-label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  margin: 2px 0 8px;
+}
+.featured-tip-actions {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  background: rgba(255,255,255,0.6);
+  border: 1px solid rgba(105,82,179,0.2);
+  border-radius: var(--rm);
+  overflow: hidden;
+}
+.featured-tip-action {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 12px 14px;
+  font-size: 13.5px;
+  color: var(--ink);
+  line-height: 1.5;
+}
+.featured-tip-action + .featured-tip-action { border-top: 1px solid rgba(105,82,179,0.16); }
+.featured-tip-action-icon {
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  margin-top: 1px;
+  border-radius: 50%;
+  background: var(--violet);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.featured-tip-action-icon svg { width: 11px; height: 11px; }
+.featured-tip-footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 1px solid rgba(105,82,179,0.18);
+}
+.featured-tip-source {
+  font-style: italic;
+  font-size: 12px;
+  color: var(--ink-faint);
+}
+.featured-tip-link {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--violet);
+  white-space: nowrap;
+}
+.featured-tip-link:hover { text-decoration: underline; }
+
+/* ---------- tips (Consejos Conscientes) ---------- */
+
+.tips-list {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 18px;
+}
+@media (min-width: 640px) {
+  .tips-list { grid-template-columns: repeat(2, 1fr); }
+}
+@media (min-width: 900px) {
+  .tips-list { grid-template-columns: repeat(3, 1fr); }
+}
+
+.tip-card {
+  background: var(--card);
+  border: none;
+  border-radius: var(--rl);
+  overflow: hidden;
+  box-shadow: var(--shadow-card);
+  display: block;
+}
+
+.tip-image {
+  position: relative;
+  aspect-ratio: 16 / 10;
+  background: var(--tip-grad, linear-gradient(135deg, #0f9b8f, #177a4a));
+  display: flex;
+  align-items: flex-start;
+  padding: 16px;
+  overflow: hidden;
+}
+.tip-image-photo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+/* Crescent en la esquina: la misma gramática de dos círculos superpuestos
+   del glifo lunar del header (ver renderMoonGlyphs en app.js), no una
+   textura decorativa genérica. */
+.tip-image::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle 30px at 82% 24%, rgba(255,255,255,0.9), rgba(255,255,255,0.9) 60%, transparent 62%),
+    radial-gradient(circle 30px at 93% 18%, rgba(0,0,0,0.32), rgba(0,0,0,0.32) 60%, transparent 62%);
+}
+.tip-badge {
+  position: relative;
+  z-index: 1;
+  padding: 5px 12px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.92);
+  color: var(--cyan-ink);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+}
+
+.tip-body { padding: 18px 20px 20px; }
+.tip-body h3 {
+  font-family: var(--font-display);
+  letter-spacing: var(--tracking-display);
+  font-size: 20px;
+  font-weight: 600;
+  margin: 0 0 8px;
+  line-height: 1.2;
+}
+.tip-body p.tip-excerpt {
+  font-size: 13.5px;
+  color: var(--ink-dim);
+  line-height: 1.55;
+  margin: 0 0 16px;
+}
+.tip-divider { border: none; border-top: 1px solid var(--border-soft); margin: 0 0 14px; }
+.tip-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.tip-footer .tip-hint {
+  font-style: italic;
+  font-size: 12px;
+  color: var(--ink-faint);
+}
+.tip-footer .tip-status {
+  font-weight: 700;
+  font-size: 13px;
+  color: var(--ink-faint);
+  white-space: nowrap;
+}
+.tip-status.is-seen { color: var(--cyan-ink); }
+.tip-status.is-done { color: var(--green); }
+
+/* ---------- contenido detail ---------- */
+
+.content-hero {
+  aspect-ratio: 16 / 10;
+  border-radius: var(--rl);
+  background: var(--tip-grad, linear-gradient(135deg, #0f9b8f, #177a4a));
+  margin-bottom: 20px;
+  position: relative;
+  overflow: hidden;
+}
+.content-hero-photo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.content-hero::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle 46px at 82% 24%, rgba(255,255,255,0.9), rgba(255,255,255,0.9) 60%, transparent 62%),
+    radial-gradient(circle 46px at 95% 16%, rgba(0,0,0,0.32), rgba(0,0,0,0.32) 60%, transparent 62%);
+}
+.content-meta {
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  font-weight: 600;
+  letter-spacing: 0.4px;
+  color: var(--cyan-ink);
+  text-transform: uppercase;
+  margin: 0 0 8px;
+}
+.content-title {
+  font-family: var(--font-display);
+  letter-spacing: var(--tracking-display);
+  font-size: 27px;
+  font-weight: 600;
+  line-height: 1.2;
+  margin: 0 0 18px;
+}
+.content-body {
+  font-size: 15px;
+  line-height: 1.75;
+  color: #29332f;
+}
+.content-body p { margin: 0 0 16px; }
+
+.cta-btn {
+  display: block;
+  width: 100%;
+  text-align: center;
+  padding: 15px;
+  border-radius: 999px;
+  background: var(--ink);
+  color: #fff;
+  font-weight: 700;
+  font-size: 14.5px;
+  margin-top: 28px;
+}
+
+/* ---------- tips relacionados (pie del detalle) ---------- */
+
+.related {
+  margin-top: 34px;
+  padding-top: 24px;
+  border-top: 1px solid var(--border-soft);
+}
+.related[hidden] { display: none; }
+.related-title {
+  font-family: var(--font-display);
+  letter-spacing: var(--tracking-display);
+  font-size: 19px;
+  font-weight: 600;
+  margin: 0 0 14px;
+}
+.related-list { display: grid; gap: 10px; }
+
+.related-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px;
+  background: var(--card);
+  border-radius: var(--rm);
+  box-shadow: var(--shadow-card);
+  transition: transform 0.15s ease;
+}
+.related-card:active { transform: scale(0.99); }
+
+.related-thumb {
+  position: relative;
+  flex-shrink: 0;
+  width: 66px;
+  height: 66px;
+  border-radius: var(--rs);
+  overflow: hidden;
+  background: var(--tip-grad, linear-gradient(135deg, #0f9b8f, #177a4a));
+}
+.related-thumb img { position: absolute; inset: 0; width: 100%; height: 100%; }
+/* Mismo crescent que la card de home y el hero, en chico. */
+.related-thumb::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle 9px at 74% 24%, rgba(255,255,255,0.85), rgba(255,255,255,0.85) 60%, transparent 62%),
+    radial-gradient(circle 9px at 92% 16%, rgba(0,0,0,0.3), rgba(0,0,0,0.3) 60%, transparent 62%);
+}
+
+.related-info { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.related-badge {
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  color: var(--cyan-ink);
+}
+.related-name {
+  font-family: var(--font-display);
+  letter-spacing: var(--tracking-display);
+  font-size: 15.5px;
+  font-weight: 600;
+  line-height: 1.25;
+  color: var(--ink);
+}
+.related-info .tip-status { font-size: 12px; }
+.related-arrow { width: 18px; height: 18px; flex-shrink: 0; margin-left: auto; color: var(--ink-faint); }
+
+/* ---------- registros: CTA de Gasto Fijo ---------- */
+
+.reg-hero {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  width: 100%;
+  text-align: left;
+  background: linear-gradient(135deg, var(--violet-pastel), var(--card) 65%);
+  border: none;
+  border-radius: var(--rl);
+  padding: 24px;
+  box-shadow: 0 2px 6px rgba(16,34,31,0.04), 0 20px 40px -8px rgba(105,82,179,0.28);
+  transition: transform 0.15s ease;
+}
+.reg-hero:active { transform: scale(0.98); }
+.reg-hero-icon {
+  width: 58px;
+  height: 58px;
+  border-radius: var(--rm);
+  flex-shrink: 0;
+  background: var(--violet);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.reg-hero-icon svg { width: 26px; height: 26px; }
+.reg-hero-body { flex: 1; min-width: 0; }
+.reg-hero-body h2 {
+  font-family: var(--font-display);
+  letter-spacing: var(--tracking-display);
+  font-size: 17.5px;
+  font-weight: 600;
+  margin: 0 0 3px;
+}
+.reg-hero-body p {
+  font-size: 13px;
+  color: var(--ink-dim);
+  margin: 0;
+}
+
+/* ---------- vencimientos activos ---------- */
+
+.subs-list {
+  display: block;
+  background: var(--card);
+  border-radius: var(--rl);
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
+  padding: 4px 0;
+}
+.subs-list .empty-state { padding: 34px 22px; }
+
+.sub-row {
+  background: none;
+  border: none;
+  padding: 18px 22px;
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  transition: background 0.15s ease;
+}
+.sub-row + .sub-row { border-top: 1px solid var(--border-soft); }
+.sub-cat-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.sub-cat-icon svg { width: 18px; height: 18px; }
+.sub-cat-icon.violet { background: var(--violet-pastel); color: var(--violet); }
+.sub-cat-icon.blue { background: var(--blue-pastel); color: var(--blue); }
+.sub-cat-icon.orange { background: var(--orange-pastel); color: var(--orange); }
+.sub-cat-icon.green { background: var(--green-pastel); color: var(--green); }
+.sub-cat-icon.grey { background: var(--border-soft); color: var(--ink-faint); }
+.sub-cat-icon.cyan { background: var(--cyan-pastel); color: var(--cyan-ink); }
+.sub-cat-icon.red { background: var(--red-pastel); color: var(--red); }
+
+.sub-main { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 7px; padding-top: 2px; }
+.sub-top { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; }
+.sub-top h4 { margin: 0; font-size: 14.5px; font-weight: 700; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.sub-amount { font-family: var(--font-mono); font-weight: 700; font-size: 14px; white-space: nowrap; flex-shrink: 0; }
+
+.sub-bottom { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+.sub-meta-wrap { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; min-width: 0; }
+.sub-meta { font-family: var(--font-mono); font-size: 11px; color: var(--ink-faint); white-space: nowrap; }
+
+.sub-actions { display: flex; gap: 2px; flex-shrink: 0; margin-left: auto; }
+.sub-actions button {
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--ink-faint);
+}
+.sub-actions button:hover { background: var(--border-soft); color: var(--ink); }
+.sub-actions button.danger:hover { background: var(--red-pastel); color: var(--red); }
+.sub-actions svg { width: 14px; height: 14px; }
+
+.badge-state {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+  padding: 3px 7px;
+  border-radius: 999px;
+  display: inline-block;
+  white-space: nowrap;
+}
+.badge-state.upcoming { background: var(--border-soft); color: var(--ink-faint); }
+.badge-state.due-soon { background: var(--cyan-pastel); color: var(--cyan-ink); }
+.badge-state.overdue { background: var(--red); color: #fff; }
+.badge-state.paid { background: var(--green-pastel); color: var(--green); }
+
+/* ---------- forms / modal ---------- */
+
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(16,34,31,0.48);
+  display: none;
+  align-items: flex-end;
+  justify-content: center;
+  z-index: 50;
+  padding: 0;
+}
+.modal-backdrop.open { display: flex; }
+.modal-sheet {
+  background: var(--card);
+  border-radius: 16px 16px 0 0;
+  padding: 22px;
+  width: 100%;
+  max-width: 480px;
+  max-height: 88vh;
+  overflow-y: auto;
+  box-shadow: var(--shadow-pop);
+}
+.modal-sheet h3 {
+  margin: 0 0 18px;
+  font-family: var(--font-display);
+  letter-spacing: var(--tracking-display);
+  font-weight: 600;
+  font-size: 19px;
+}
+
+.field { margin-bottom: 14px; }
+.field label {
+  display: block;
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--ink-dim);
+  margin-bottom: 6px;
+}
+.field input, .field select {
+  width: 100%;
+  padding: 13px 14px;
+  border-radius: var(--rs);
+  background: var(--bg);
+  border: 1px solid var(--border);
+  color: var(--ink);
+  font-size: 14.5px;
+  outline: none;
+  transition: border-color 0.15s ease;
+  appearance: none;
+}
+.field input:focus, .field select:focus { border-color: var(--cyan); }
+/* Select con placeholder obligatorio (Categoría): mientras no eligieron nada se
+   ve apagado como un ::placeholder, no como un valor ya cargado. */
+.field select:has(option[value=""]:checked) { color: var(--ink-dim); }
+.field select option { color: var(--ink); }
+.field-row { display: flex; gap: 10px; }
+.field-row .field { flex: 1; }
+
+.modal-actions { display: flex; gap: 10px; margin-top: 6px; }
+.modal-actions button {
+  flex: 1;
+  padding: 14px;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 14px;
+}
+.modal-actions .cancel { background: var(--bg); color: var(--ink-dim); }
+.modal-actions .save { background: var(--cyan-ink); color: #fff; }
+
+@media (min-width: 640px) {
+  .modal-backdrop { align-items: center; }
+  .modal-sheet { border-radius: 16px; }
+}
+
+/* ---------- perfil ---------- */
+
+.profile-head {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 0 26px;
+  text-align: center;
+}
+.avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--violet-pastel);
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  letter-spacing: var(--tracking-display);
+  font-weight: 600;
+  font-size: 15px;
+  color: var(--violet);
+  flex-shrink: 0;
+}
+.profile-head .avatar { width: 74px; height: 74px; font-size: 27px; }
+.profile-head h2 { margin: 0; font-family: var(--font-display); letter-spacing: var(--tracking-display); font-weight: 600; font-size: 20px; }
+.profile-head p { margin: 0; color: var(--ink-faint); font-size: 12.5px; }
+
+.form-block {
+  background: var(--card);
+  border: none;
+  border-radius: var(--rl);
+  padding: 6px 22px;
+  margin-bottom: 16px;
+  box-shadow: var(--shadow-card);
+}
+.form-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 15px 0;
+  border-bottom: 1px solid var(--border-soft);
+}
+.form-row:last-child { border-bottom: none; }
+.form-row .label { font-size: 13px; color: var(--ink-dim); }
+.form-row .value { font-size: 14px; font-weight: 700; }
+.edit-link { color: var(--cyan-ink); font-size: 13px; font-weight: 700; }
+
+.danger-btn {
+  width: 100%;
+  padding: 15px;
+  border-radius: 999px;
+  background: var(--red-pastel);
+  border: 1px solid rgba(179,57,43,0.25);
+  color: var(--red);
+  font-weight: 700;
+  font-size: 14px;
+}
+
+/* ---------- placeholder (retos) ---------- */
+
+.placeholder-block {
+  text-align: center;
+  padding: 70px 20px;
+  color: var(--ink-faint);
+}
+.placeholder-block .ph-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--cyan-pastel);
+  color: var(--cyan-ink);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 18px;
+}
+.placeholder-block .ph-icon svg { width: 24px; height: 24px; }
+.placeholder-block h2 {
+  font-family: var(--font-display);
+  letter-spacing: var(--tracking-display);
+  font-weight: 600;
+  color: var(--ink);
+  font-size: 18px;
+  margin: 0 0 6px;
+}
+.placeholder-block p { font-size: 13.5px; margin: 0; max-width: 280px; margin-inline: auto; }
+
+/* ---------- toast ---------- */
+
+.toast {
+  position: fixed;
+  bottom: calc(var(--nav-h) + 34px);
+  left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  background: var(--ink);
+  color: #fff;
+  padding: 12px 20px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 600;
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.25s ease;
+  z-index: 60;
+  white-space: nowrap;
+}
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+/* ---------- skeleton / empty state ---------- */
+
+.skeleton {
+  background: linear-gradient(90deg, var(--border-soft) 25%, var(--border) 50%, var(--border-soft) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: var(--rs);
+}
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+.skel-card { height: 66px; border-radius: var(--rl); }
+.skel-tip { aspect-ratio: 16/10; border-radius: var(--rl); }
+
+.empty-state { text-align: center; color: var(--ink-faint); font-size: 13.5px; padding: 32px 0; }
+
+.spinner {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 3px solid var(--border);
+  border-top-color: var(--cyan);
+  animation: spin 0.8s linear infinite;
+  margin: 60px auto;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.loading-wrap { display: flex; flex-direction: column; align-items: center; padding: 40px 0; color: var(--ink-faint); font-size: 13px; }
+
+/* ---------- bottom nav (mobile) / sidebar (desktop) ---------- */
+/* Mobile: pill flotante teal oscuro, como el nav de la referencia wallet.
+   Desktop: vuelve a ser un sidebar claro — más cómodo para pantallas grandes. */
+
+.app-nav {
+  position: fixed;
+  bottom: calc(18px + env(safe-area-inset-bottom, 0px));
+  left: 16px;
+  right: 16px;
+  height: var(--nav-h);
+  background: var(--nav-bg);
+  border-top: none;
+  border-radius: 20px;
+  box-shadow: var(--shadow-nav);
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  z-index: 40;
+  padding: 0 6px;
+}
+
+.nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  color: var(--nav-fg);
+  font-size: 10px;
+  font-weight: 700;
+  padding: 8px 12px;
+  border-radius: var(--rs);
+}
+.nav-item svg {
+  box-sizing: content-box;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease, padding 0.2s ease;
+}
+.nav-item.active { color: var(--nav-fg-active); }
+/* El ítem activo levanta su ícono en un círculo blanco flotando sobre la
+   pill del nav — la silueta del botón central de la referencia, aplicada
+   a cualquier sección activa en vez de una sola acción fija. */
+.nav-item.active svg {
+  background: var(--card);
+  color: var(--cyan-ink);
+  padding: 11px;
+  transform: translateY(-16px);
+  box-shadow: 0 12px 22px rgba(0,0,0,0.3), 0 2px 5px rgba(0,0,0,0.18);
+}
+.nav-item.active span { margin-top: -9px; }
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  flex: 1;
+  gap: 4px;
+}
+
+.nav-top, .nav-bottom { display: none; }
+
+@media (min-width: 900px) {
+  body { padding-bottom: 0; padding-left: var(--sidebar-w); }
+  .app-header { left: var(--sidebar-w); }
+  .page { padding-left: 24px; padding-right: 24px; max-width: 760px; }
+
+  .app-nav {
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: auto;
+    width: var(--sidebar-w);
+    height: 100vh;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
+    background: var(--card);
+    border-top: none;
+    border-right: 1px solid var(--border);
+    border-radius: 0;
+    box-shadow: none;
+    padding: 24px 16px;
+    gap: 6px;
+  }
+  .nav-top { display: block; padding: 0 8px 24px; }
+  .nav-bottom { display: block; margin-top: auto; padding-top: 16px; border-top: 1px solid var(--border); }
+  .nav-links { flex: none; flex-direction: column; justify-content: flex-start; align-items: stretch; gap: 4px; }
+  .nav-item { flex-direction: row; justify-content: flex-start; gap: 12px; font-size: 14px; padding: 12px 14px; border-radius: var(--rs); color: var(--ink-faint); background: none; }
+  .nav-item svg { padding: 0; transform: none; box-shadow: none; background: none; color: inherit; }
+  .nav-item.active { background: var(--cyan-pastel); color: var(--cyan-ink); }
+  .nav-item.active svg { color: var(--cyan-ink); }
+  .nav-item.active span { margin-top: 0; }
+
+  .nav-user { display: flex; align-items: center; gap: 10px; padding: 8px; }
+  .nav-user-name { font-size: 13.5px; font-weight: 700; margin: 0; color: var(--ink); }
+  .nav-user-sub { font-size: 11.5px; color: var(--ink-faint); margin: 0; }
+}
