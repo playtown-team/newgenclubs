@@ -1113,9 +1113,20 @@ function saveEditModal() {
   showToast('Perfil actualizado');
 }
 
+function getCountry() {
+  const parts = location.pathname.split('/').filter(Boolean);
+
+  const countries = ['ar', 'cl', 'pe'];
+
+  return parts.find(part => countries.includes(part)) || null;
+}
 // ───────────────────────── ROUTER ─────────────────────────
 
 document.addEventListener('DOMContentLoaded', () => {
+
+  const country = getCountry();
+  console.log(country);
+
   if (document.getElementById('home-container')) { initHome(); return; }
   if (document.getElementById('explorar-container')) { initExplorar(); return; }
   if (document.getElementById('mood-container')) { initMoodPage(); return; }

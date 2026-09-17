@@ -1254,8 +1254,18 @@ function initStartPage() {
   }
 }
 
+function getCountry() {
+  const parts = location.pathname.split('/').filter(Boolean);
+
+  const countries = ['ar', 'cl', 'pe'];
+
+  return parts.find(part => countries.includes(part)) || null;
+}
+
 // ═══════ INIT ROUTER ═══════
 document.addEventListener('DOMContentLoaded', () => {
+  const country = getCountry();
+  console.log(country);
   // 1. Save ANI from URL if carrier-redirected
   checkAniInUrl();
 
