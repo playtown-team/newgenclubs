@@ -1,0 +1,3 @@
+RewriteEngine On
+
+RewriteRule ^(ar|cl|pe)/(.*)$ $2 [L]
