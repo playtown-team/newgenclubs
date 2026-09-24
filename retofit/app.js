@@ -1089,6 +1089,8 @@ function resetAllData() {
 }
 
 // ═══════ ANI VALIDATION ═══════
+// Gate temporalmente desactivado. Poner en true para volver a pedir el ANI.
+const ANI_GATE_ENABLED = false;
 const ANI_KEY = 'rf_ani';
 const ANI_VALIDATE_BASE = 'https://restito.playtown.com.ar:3000/club/checkClubSubscription/playar';
 const ANI_CLUB_ID = '35';
@@ -1279,7 +1281,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // 3. ANI guard: block navigation until subscription is verified this month
-  if (!isAniValidThisMonth()) {
+  if (ANI_GATE_ENABLED && !isAniValidThisMonth()) {
     showAniModal();
   }
 
