@@ -26,22 +26,23 @@ MindMusic's mechanism (tap-a-mood, no login, no search-first UX) is not claimed 
 
 ## Capabilities and Constraints
 
-- Multi-page static site: no build tooling, no JS framework. Shared `styles.css` and `app.js`; per-page mock "API" layer (`fetchMoodList`, `fetchTracksByMood`, `fetchAllPlaylists`, etc.) already shaped to match a future real endpoint 1:1.
-- Data today is local mock data (`mock-data.js`); a WordPress backend does not exist yet for this product. When it's built, it is expected to follow the same pattern as the sibling product Retofit: a REST API returning a `mobile_content`-equivalent JSON string per item. Only the bodies of the `fetch*` functions in `app.js` are expected to change; calling pages should not need to change.
-- Audio is real (native `<audio>`) and the tracks are the product's own final music: 21 `.m4a` files committed under `audio/<mood-id>/` and served same-origin. The demo placeholders are gone. Expected to move to the WordPress server later, changing only the URL prefix.
+- Multi-page static site: no build tooling, no JS framework. Shared `styles.css` and `app.js`; the API layer (`fetchMoodList`, `fetchTracksByMood`, `fetchAllPlaylists`, etc.) is the only code that knows about the backend.
+- Data comes from WordPress REST (`contenidos.vip/mindmusic`), same pattern as the sibling products Retofit and Mis Gastos en Orden: one post per item, with its JSON carried in the post body. This install exposes the `content/v2` plugin rather than the `api/v3` one the siblings use, so the client reads the list endpoint and then each post's full body, and un-mangles WordPress's HTML wrapping and smart quotes before parsing. Categories: `estados-de-animo`, `playlists`, `audios`. There is no mock and no static fallback — if the API fails, the screen says so.
+- Cover images travel as URLs inside the JSON rather than as WordPress media attachments, because every song has its own photo and songs are not posts — they live inside their playlist's JSON. Moods and playlists can still be given a WordPress featured image, which wins over the JSON value.
+- Audio is real (native `<audio>`) and the tracks are the product's own final music: 38 files hosted on S3 (21 `.m4a` + a second batch of 17 `.mp3`) (`ptown-wap-ar/mindmusic/music/<mood-id>/`), no longer in the repo. Because the bucket sends no CORS headers, the player's waveform runs in synthetic mode; enabling CORS on the bucket plus `MM_AUDIO_CORS = true` restores real spectrum analysis.
 - Local device state only: `localStorage` holds a `mm_profile` (display name), no auth, no streak/stats/history.
-- 7 fixed mood states (Calma, Energía, Foco, Flujo, Alegría, Relax, Superación) are current product structure, defined in `mock-data.js`. Of the 4 content types originally planned, only Playlists Emocionales has recorded content; Cápsulas de Sonido, Audio Mensajes and Música Guiada remain in the model but are absent from the catalog until audio exists for them.
+- 7 fixed mood states (Calma, Energía, Foco, Flujo, Alegría, Relax, Superación) are current product structure, authored as posts in the `estados-de-animo` category. Of the 4 content types originally planned, only Playlists Emocionales has recorded content; Cápsulas de Sonido, Audio Mensajes and Música Guiada remain in the model but are absent from the catalog until audio exists for them.
 - PWA installability/offline support: **undecided**. "PWA" in current docs/branding is not yet confirmed to mean "installable with manifest + offline," and no `manifest.json` or service worker exists yet. Do not assume installability is a hard requirement; do not assume it is out of scope either.
 
 ## Brand Commitments
 
 - Product name "MindMusic", tagline element "by Playtown" shown in the header/nav across all pages.
 - "Club" is Playtown's internal name for a product line (this app is one "club"), not evidence of a physical club/gym — do not design around a literal on-premises club experience.
-- Sibling product Retofit shares the same overall architecture pattern (static pages + mock layer shaped for a future WordPress `mobile_content` swap); no confirmed requirement that MindMusic share Retofit's visual identity.
+- Sibling products Retofit and Mis Gastos en Orden share the same overall architecture pattern (static pages reading WordPress `mobile_content` over REST); no confirmed requirement that MindMusic share their visual identity.
 
 ## Evidence on Hand
 
-- Real audio content on hand: 21 final tracks, delivered grouped by mood folder — 5 for Foco, 5 for Relax, 6 for Alegría, 5 for Superación. No tracks were supplied for Calma, Energía or Flujo; per product decision those moods reuse an adjacent repertoire (Calma and Flujo take Foco's, Energía takes Superación's) rather than sitting empty.
+- Real audio content on hand: 38 final tracks in two batches, delivered grouped by mood folder — 9 for Foco, 10 for Relax, 10 for Alegría, 9 for Superación. No tracks were supplied for Calma, Energía or Flujo; per product decision those moods reuse an adjacent repertoire (Flujo takes Foco's, Calma takes Relax's, Energía takes Alegría's) rather than sitting empty.
 - No case studies, testimonials, carrier names, or real usage data on hand; do not fabricate any of these.
 - Existing implemented visual system (disc/vinyl-cover metaphor, ink-tinted mood covers, Fraunces/Work Sans/IBM Plex Mono type system) is documented separately as incumbent design authority, not product truth.
 

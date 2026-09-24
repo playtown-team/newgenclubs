@@ -1,0 +1,13 @@
+[
+  {
+    "AllowedHeaders": ["Range", "Content-Type"],
+    "AllowedMethods": ["GET", "HEAD"],
+    "AllowedOrigins": [
+      "https://mindmusic.vercel.app",
+      "http://localhost:4180",
+      "http://localhost:4181"
+    ],
+    "ExposeHeaders": ["Content-Length", "Content-Range", "Content-Type", "Accept-Ranges"],
+    "MaxAgeSeconds": 3000
+  }
+]

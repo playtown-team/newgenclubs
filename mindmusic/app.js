@@ -1,7 +1,7 @@
 // ============================================================
 // MINDMUSIC — app.js
 // Todo el JS del sitio: íconos, utils, estado local, capa de datos
-// (mock hoy, WordPress REST mañana), nav, e init de cada página.
+// (REST de WordPress), nav, e init de cada página.
 // ============================================================
 
 // ───────────────────────── ICONS ─────────────────────────
@@ -54,12 +54,14 @@ function debounce(fn, wait = 200) {
 }
 
 function contentTypeName(id) {
-  const ct = MOCK_DB.contentTypes.find((c) => c.id === id);
+  const ct = APP_DATA.contentTypes.find((c) => c.id === id);
   return ct ? ct.name : id;
 }
 
+// Sincrónico a propósito (se usa en pleno render): lee el índice que dejó
+// `fetchMoodList()`. Toda página que pinte un estado lo espera antes.
 function moodById(id) {
-  return MOCK_DB.moods.find((m) => m.id === id);
+  return MOODS_BY_ID.get(id);
 }
 
 function photoUrl(base, w, q = 75) {
@@ -217,54 +219,307 @@ function refreshGreeting() {
   document.querySelectorAll('.js-greet-title').forEach((el) => (el.textContent = greetingText()));
 }
 
-// ───────────────────────── MOCK API ─────────────────────────
-// Hoy lee de MOCK_DB (mock-data.js). El día que exista el endpoint real de
-// WordPress, sólo cambia el cuerpo de estas funciones — las páginas que las
-// llaman no cambian.
+// ───────────────────────── API DE CONTENIDO (WordPress) ─────────────────────────
+// Todo el contenido (estados de ánimo, playlists con su tracklist, audios
+// sueltos) vive en WordPress y se trae por REST. El perfil del usuario NO pasa
+// por acá: es local, ver arriba.
+//
+// El plugin de este sitio publica el namespace `content/v2` (no el `api/v3` de
+// Retofit / Mis Gastos en Orden), con dos endpoints útiles:
+//
+//   GET  articles?category=<slug>&limit=100   → lista: id, title, slug,
+//        short_description (el EXTRACTO del post), thumbnail
+//   GET  article?id=<id>                      → detalle: incluye `content`,
+//        el cuerpo completo del post
+//
+// `limit` y `page` no se pueden combinar (juntos devuelven 404), pero con
+// `limit=100` entra todo de una: no hace falta paginar.
+//
+// Cada post guarda su JSON en el cuerpo. Ojo con dos cosas:
+//  1. WordPress "tipografía" el cuerpo al servirlo: las comillas rectas del
+//     JSON vuelven como `&#8220;`/`&#8221;`, y el texto viene envuelto en HTML
+//     (`<p>`, `<br />`). `parsePostJson()` deshace las dos cosas.
+//  2. El extracto automático se corta a 55 palabras (queda un `[…]`). Por eso
+//     `short_description` es sólo un ATAJO: si el JSON entero entró ahí, se usa
+//     y nos ahorramos una request por ítem; si no parsea, se pide el detalle.
+//
+// Las fotos viajan como URL dentro del JSON (`photo`): es la única forma de que
+// cada canción tenga la suya, porque las canciones no son posts — viven dentro
+// del JSON de su playlist. Para estados y playlists, si el post tiene imagen
+// destacada en WordPress, esa gana sobre la del JSON.
 
-function apiDelay(ms = 250) {
-  return new Promise((resolve) => setTimeout(resolve, ms));
+const API_BASE = 'https://contenidos.vip/mindmusic/wp-json/content/v2';
+const WP_CATEGORY = {
+  moods:     'estados-de-animo',
+  playlists: 'playlists',
+  tracks:    'audios',       // cápsulas / audio mensajes / música guiada
+};
+
+const API_LIMIT = 100;
+
+async function apiGet(path) {
+  const res = await fetch(`${API_BASE}/${path}`);
+  if (!res.ok) throw new Error(`HTTP ${res.status} al pedir "${path}"`);
+  const json = await res.json();
+  // El plugin contesta 200 con `results: false` cuando no encuentra nada: una
+  // categoría vacía (o que todavía no existe) no es un error — hoy `audios`
+  // está así. Ojo: un slug mal escrito devuelve exactamente lo mismo, así que
+  // esto no distingue "vacía" de "no existe" (ver `fetchMoodList`).
+  return Array.isArray(json.results) ? json.results : [];
 }
+
+// ── Fuente principal: la REST estándar de WordPress (`wp/v2`) ───────────────
+// El `articles?category=` del plugin `content/v2` devuelve 404 para TODO en el
+// sitio real (también con categorías que tienen posts, y también en el sitio de
+// Retofit): sólo le anda `article?id=`. La REST del core sí responde, manda
+// CORS abierto y trae el cuerpo completo de todos los posts de la categoría en
+// un solo viaje — así que es la fuente principal, y `content/v2` queda de
+// respaldo (es además lo que imita `tools/serve-local.js`).
+const WP_API_BASE = API_BASE.replace(/\/content\/v2$/, '/wp/v2');
+
+// slug de categoría → id numérico (el core filtra posts por id, no por slug).
+// Una sola request para las tres, compartida por toda la carga de página.
+let WP_CATEGORY_IDS = null;
+function wpCategoryIds() {
+  if (!WP_CATEGORY_IDS) {
+    const slugs = Object.values(WP_CATEGORY).join(',');
+    WP_CATEGORY_IDS = fetch(`${WP_API_BASE}/categories?slug=${slugs}&per_page=100&_fields=id,slug`)
+      .then((res) => {
+        if (!res.ok) throw new Error(`HTTP ${res.status} al pedir las categorías`);
+        return res.json();
+      })
+      .then((cats) => new Map(cats.map((c) => [c.slug, c.id])));
+    WP_CATEGORY_IDS.catch(() => { WP_CATEGORY_IDS = null; }); // que se pueda reintentar
+  }
+  return WP_CATEGORY_IDS;
+}
+
+async function wpFetchCategory(slug) {
+  const catId = (await wpCategoryIds()).get(slug);
+  if (catId == null) return []; // la categoría todavía no existe en WordPress
+  const res = await fetch(`${WP_API_BASE}/posts?categories=${catId}&per_page=${API_LIMIT}`
+    + '&_embed=wp:featuredmedia&_fields=id,slug,title,content,_links,_embedded');
+  if (!res.ok) throw new Error(`HTTP ${res.status} al pedir los posts de "${slug}"`);
+  const posts = await res.json();
+  return posts.map((post) => {
+    const media = post._embedded && post._embedded['wp:featuredmedia'];
+    // Misma forma de ítem que devuelve `content/v2`, para que los mapeos de
+    // abajo no sepan de dónde vino.
+    const item = {
+      id: post.id,
+      slug: post.slug,
+      title: decodeHtml(post.title && post.title.rendered),
+      thumbnail: (media && media[0] && media[0].source_url) || '',
+    };
+    return { item, data: parsePostJson(post.content && post.content.rendered) };
+  });
+}
+
+function decodeHtml(html) {
+  if (!html) return '';
+  try {
+    return new DOMParser().parseFromString(String(html), 'text/html').body.textContent || '';
+  } catch (e) {
+    return String(html);
+  }
+}
+
+// Respaldo: el plugin `content/v2`. Una request para la lista, más una por cada
+// ítem cuyo JSON no haya entrado entero en el extracto.
+async function pluginFetchCategory(slug) {
+  const list = await apiGet(`articles?category=${encodeURIComponent(slug)}&limit=${API_LIMIT}`);
+  return Promise.all(list.map(async (item) => {
+    const fast = parsePostJson(item.short_description);
+    if (fast) return { item, data: fast };
+    const [detail] = await apiGet(`article?id=${encodeURIComponent(item.id)}`);
+    return { item: Object.assign({}, item, detail), data: parsePostJson(detail && detail.content) };
+  }));
+}
+
+// Devuelve `[{ item, data }]`: el post tal como lo manda la API y su JSON ya
+// parseado.
+async function apiFetchCategory(slug) {
+  try {
+    return await wpFetchCategory(slug);
+  } catch (e) {
+    console.warn(`[contenido] wp/v2 no respondió para "${slug}", pruebo content/v2:`, e.message);
+    return pluginFetchCategory(slug);
+  }
+}
+
+// El JSON llega envuelto en HTML y con las comillas tipografiadas por
+// WordPress. `textContent` decodifica las entidades y saca las etiquetas de una
+// sola pasada; después se prueba enderezar las comillas y sacar una coma
+// colgando (pasa al editar el post a mano).
+function parsePostJson(raw) {
+  if (!raw) return null;
+  let text = String(raw);
+  if (/[<&]/.test(text)) {
+    try {
+      text = new DOMParser().parseFromString(text, 'text/html').body.textContent || text;
+    } catch (e) { /* sin DOM, se prueba con el texto tal cual */ }
+  }
+  const tries = [];
+  for (const variant of [text, text.replace(/[“”]/g, '"')]) {
+    tries.push(variant, variant.replace(/,(\s*[}\]])/g, '$1'));
+  }
+  for (const t of tries) {
+    try {
+      const parsed = JSON.parse(t);
+      if (parsed && typeof parsed === 'object') return parsed;
+    } catch (e) { /* probamos la siguiente reparación */ }
+  }
+  return null;
+}
+
+// Descarta los posts sin JSON válido y los ids repetidos: un import corrido dos
+// veces deja duplicados, y con estados duplicados el catálogo mostraría dos
+// veces el mismo mood.
+function mapContentItems(entries, mapFn) {
+  const seen = new Set();
+  const out = [];
+  for (const { item, data } of entries) {
+    if (!data) {
+      console.warn('[contenido] No pude leer el JSON del post', item && item.id, item && item.title);
+      continue;
+    }
+    const mapped = mapFn(data, item);
+    if (!mapped || !mapped.id || seen.has(mapped.id)) continue;
+    seen.add(mapped.id);
+    out.push(mapped);
+  }
+  return out;
+}
+
+// El plugin NUNCA devuelve `thumbnail` vacío: si el post no tiene imagen
+// destacada manda el placeholder del theme. Hay que descartarlo o la foto del
+// JSON no se usaría nunca.
+const WP_PLACEHOLDER_THUMB = /\/(default-thumb|default_image)\.(png|jpe?g)$/i;
+
+function wpThumbnail(item) {
+  const url = (item && item.thumbnail) || '';
+  return WP_PLACEHOLDER_THUMB.test(url) ? '' : url;
+}
+
+function toOrder(value) {
+  const n = Number(value);
+  return Number.isFinite(n) ? n : Number.MAX_SAFE_INTEGER;
+}
+
+function byOrder(a, b) {
+  return a.order - b.order;
+}
+
+// Una sola pasada por la red por categoría y por carga de página.
+const CONTENT_CACHE = { moods: null, playlists: null, tracks: null };
+
+// Índice de estados para `moodById()`, que se usa en pleno render (sincrónico).
+// Lo llena `fetchMoodList()`: toda página que pinte un mood tiene que esperar
+// esa carga antes de dibujar.
+let MOODS_BY_ID = new Map();
 
 async function fetchMoodList() {
-  await apiDelay();
-  return MOCK_DB.moods;
-}
-
-async function fetchAllTracks() {
-  await apiDelay();
-  return MOCK_DB.tracks;
-}
-
-async function fetchTracksByMood(moodId) {
-  await apiDelay();
-  return MOCK_DB.tracks.filter((t) => t.moodId === moodId);
-}
-
-async function fetchTracksByType(contentType) {
-  await apiDelay();
-  if (!contentType || contentType === 'todos') return MOCK_DB.tracks;
-  return MOCK_DB.tracks.filter((t) => t.contentType === contentType);
-}
-
-async function fetchTrackById(id) {
-  await apiDelay();
-  return MOCK_DB.tracks.find((t) => t.id === id) || null;
+  if (CONTENT_CACHE.moods) return CONTENT_CACHE.moods;
+  const raw = await apiFetchCategory(WP_CATEGORY.moods);
+  const list = mapContentItems(raw, (mc, item) => ({
+    id: mc.id || item.slug,
+    name: mc.name || item.title || '',
+    subtitle: mc.subtitle || '',
+    cta: mc.cta || '',
+    icon: mc.icon || '',
+    ink: mc.ink || '',
+    grad: mc.grad || '',
+    photo: wpThumbnail(item) || mc.photo || '',
+    order: toOrder(mc.order),
+  })).sort(byOrder);
+  // El plugin contesta 200 con `results: false` tanto para una categoría vacía
+  // como para un slug mal escrito, así que "cero estados" no se distingue de un
+  // error de red — y sin estados no hay app. Se trata como falla de carga para
+  // que la pantalla lo diga, en vez de quedar en blanco.
+  if (!list.length) throw new Error('WordPress no devolvió ningún estado de ánimo');
+  CONTENT_CACHE.moods = list;
+  MOODS_BY_ID = new Map(list.map((m) => [m.id, m]));
+  return list;
 }
 
 async function fetchAllPlaylists() {
-  await apiDelay();
-  return MOCK_DB.playlists;
+  if (CONTENT_CACHE.playlists) return CONTENT_CACHE.playlists;
+  CONTENT_CACHE.playlists = mapContentItems(await apiFetchCategory(WP_CATEGORY.playlists), (mc, item) => {
+    const id = mc.id || item.slug;
+    // Las canciones no tienen post propio: el id se deriva de su posición en la
+    // playlist, igual que la URL `player.html?playlist=XXX&t=N`.
+    const tracks = (Array.isArray(mc.tracks) ? mc.tracks : []).map((song, i) => ({
+      id: `${id}-${i}`,
+      title: song.title || '',
+      duration: Number(song.duration) || 0,
+      audioUrl: song.audioUrl || '',
+      photo: song.photo || '',
+    }));
+    return {
+      id,
+      moodId: mc.moodId || '',
+      contentType: mc.contentType || 'playlists',
+      title: mc.title || item.title || '',
+      desc: mc.desc || '',
+      photo: wpThumbnail(item) || mc.photo || '',
+      // El `short_description` del post es el JSON crudo (o su recorte), no un
+      // texto: el resumen sale del propio `desc`.
+      short_description: (mc.desc || '').split('.')[0],
+      template: 'playlist',
+      order: toOrder(mc.order),
+      tracks,
+    };
+  }).sort(byOrder);
+  return CONTENT_CACHE.playlists;
+}
+
+async function fetchAllTracks() {
+  if (CONTENT_CACHE.tracks) return CONTENT_CACHE.tracks;
+  CONTENT_CACHE.tracks = mapContentItems(await apiFetchCategory(WP_CATEGORY.tracks), (mc, item) => ({
+    id: mc.id || item.slug,
+    moodId: mc.moodId || '',
+    contentType: mc.contentType || '',
+    title: mc.title || item.title || '',
+    desc: mc.desc || '',
+    duration: Number(mc.duration) || 0,
+    photo: wpThumbnail(item) || mc.photo || '',
+    audioUrl: mc.audioUrl || '',
+    short_description: (mc.desc || '').split('.')[0],
+    template: 'audio',
+    order: toOrder(mc.order),
+  })).sort(byOrder);
+  return CONTENT_CACHE.tracks;
+}
+
+async function fetchTracksByMood(moodId) {
+  return (await fetchAllTracks()).filter((t) => t.moodId === moodId);
+}
+
+async function fetchTracksByType(contentType) {
+  const tracks = await fetchAllTracks();
+  if (!contentType || contentType === 'todos') return tracks;
+  return tracks.filter((t) => t.contentType === contentType);
+}
+
+async function fetchTrackById(id) {
+  return (await fetchAllTracks()).find((t) => t.id === id) || null;
 }
 
 async function fetchPlaylistsByMood(moodId) {
-  await apiDelay();
-  return MOCK_DB.playlists.filter((p) => p.moodId === moodId);
+  return (await fetchAllPlaylists()).filter((p) => p.moodId === moodId);
 }
 
 async function fetchPlaylistById(id) {
-  await apiDelay();
-  return MOCK_DB.playlists.find((p) => p.id === id) || null;
+  return (await fetchAllPlaylists()).find((p) => p.id === id) || null;
+}
+
+// Si el contenido no carga, la pantalla lo dice en vez de quedarse en el
+// esqueleto para siempre. No hay fallback a datos estáticos: la fuente es WP.
+function showContentError(el, msg = 'No pudimos cargar el contenido. Revisá tu conexión y volvé a intentar.') {
+  const node = typeof el === 'string' ? document.getElementById(el) : el;
+  if (!node) return;
+  node.style.display = '';
+  node.innerHTML = `<div class="empty-state">${escapeHtml(msg)}</div>`;
 }
 
 // ───────────────────────── NAV ─────────────────────────
@@ -297,7 +552,15 @@ async function initHome() {
   renderMoodSkeletons();
   renderTrackSkeletons('home-tracks');
 
-  const [moods, tracks, playlists] = await Promise.all([fetchMoodList(), fetchAllTracks(), fetchAllPlaylists()]);
+  let moods, tracks, playlists;
+  try {
+    [moods, tracks, playlists] = await Promise.all([fetchMoodList(), fetchAllTracks(), fetchAllPlaylists()]);
+  } catch (err) {
+    console.error('[contenido] No pude traer el contenido de la home', err);
+    showContentError('home-moods', 'No pudimos cargar los estados de ánimo.');
+    showContentError('home-tracks');
+    return;
+  }
   homeAllItems = buildFeed(tracks, playlists);
 
   renderMoodGrid(moods.slice(0, 4), document.getElementById('home-moods'));
@@ -335,13 +598,13 @@ function renderContentTabs() {
   // Con una sola categoría de contenido, el filtro no filtra nada: se oculta
   // en vez de mostrar un "Todos / Playlists" redundante. Vuelve solo cuando
   // haya más de un contentType.
-  if (MOCK_DB.contentTypes.length < 2) {
+  if (APP_DATA.contentTypes.length < 2) {
     el.style.display = 'none';
     homeActiveType = 'todos';
     return;
   }
   el.style.display = '';
-  const types = [{ id: 'todos', name: 'Todos' }, ...MOCK_DB.contentTypes];
+  const types = [{ id: 'todos', name: 'Todos' }, ...APP_DATA.contentTypes];
   el.innerHTML = types.map((t) => `
     <button class="tab ${t.id === homeActiveType ? 'active' : ''}" data-type="${t.id}">${escapeHtml(t.name)}</button>
   `).join('');
@@ -417,7 +680,13 @@ let explorarMoods = [];
 async function initExplorar() {
   initNav();
   renderCatSkeletons();
-  explorarMoods = await fetchMoodList();
+  try {
+    explorarMoods = await fetchMoodList();
+  } catch (err) {
+    console.error('[contenido] No pude traer los estados de ánimo', err);
+    showContentError('explorar-grid', 'No pudimos cargar los estados de ánimo.');
+    return;
+  }
   renderCatGrid(explorarMoods);
 
   const searchInput = document.getElementById('explorar-search');
@@ -457,7 +726,18 @@ function renderCatGrid(moods) {
 async function initMoodPage() {
   initNav();
   const id = new URLSearchParams(location.search).get('id');
-  const mood = moodById(id);
+
+  // El estado y su contenido se piden juntos; `moodById()` sólo responde
+  // después de que `fetchMoodList()` haya llenado el índice.
+  let mood, tracks, playlists;
+  try {
+    [, tracks, playlists] = await Promise.all([fetchMoodList(), fetchTracksByMood(id), fetchPlaylistsByMood(id)]);
+    mood = moodById(id);
+  } catch (err) {
+    console.error('[contenido] No pude traer el estado de ánimo', err);
+    showContentError('mood-loading');
+    return;
+  }
 
   if (!mood) {
     document.getElementById('mood-loading').innerHTML = `<div class="empty-state">No encontramos ese estado de ánimo.</div>`;
@@ -470,7 +750,6 @@ async function initMoodPage() {
   document.getElementById('mood-icon').innerHTML = MOOD_ICONS[mood.icon] || '';
   document.getElementById('mood-icon').style.setProperty('--m-ink', mood.ink);
 
-  const [tracks, playlists] = await Promise.all([fetchTracksByMood(mood.id), fetchPlaylistsByMood(mood.id)]);
   document.getElementById('mood-loading').style.display = 'none';
   document.getElementById('mood-content').style.display = '';
 
@@ -554,7 +833,15 @@ function renderMoodSongs(songs, mood) {
 async function initPlaylistPage() {
   initNav();
   const id = new URLSearchParams(location.search).get('id');
-  const playlist = await fetchPlaylistById(id);
+
+  let playlist;
+  try {
+    [, playlist] = await Promise.all([fetchMoodList(), fetchPlaylistById(id)]);
+  } catch (err) {
+    console.error('[contenido] No pude traer la playlist', err);
+    showContentError('playlist-loading');
+    return;
+  }
 
   if (!playlist) {
     document.getElementById('playlist-loading').innerHTML = `<div class="empty-state">No encontramos esa playlist.</div>`;
@@ -608,8 +895,25 @@ async function initPlayerPage() {
   const params = new URLSearchParams(location.search);
   const playlistId = params.get('playlist');
 
+  // El índice de estados tiene que estar cargado antes de resolver el mood
+  // de la pista, sea de una playlist o de un audio suelto.
+  try {
+    await fetchMoodList();
+  } catch (err) {
+    console.error('[contenido] No pude traer los estados de ánimo', err);
+    showContentError('player-loading');
+    return;
+  }
+
   if (playlistId) {
-    const playlist = await fetchPlaylistById(playlistId);
+    let playlist;
+    try {
+      playlist = await fetchPlaylistById(playlistId);
+    } catch (err) {
+      console.error('[contenido] No pude traer la playlist', err);
+      showContentError('player-loading');
+      return;
+    }
     if (!playlist) {
       document.getElementById('player-loading').innerHTML = `<div class="empty-state">No encontramos esa playlist.</div>`;
       return;
@@ -621,7 +925,14 @@ async function initPlayerPage() {
     playerIndex = Number.isInteger(t) && t >= 0 && t < playerTracks.length ? t : 0;
   } else {
     const id = params.get('id');
-    const track = await fetchTrackById(id);
+    let track;
+    try {
+      track = await fetchTrackById(id);
+    } catch (err) {
+      console.error('[contenido] No pude traer el audio', err);
+      showContentError('player-loading');
+      return;
+    }
     if (!track) {
       document.getElementById('player-loading').innerHTML = `<div class="empty-state">No encontramos ese audio.</div>`;
       return;
@@ -822,9 +1133,11 @@ function stepTrack(dir) {
 //    un oleaje sintético lento, atado a play/pausa. Misma sensación de calma,
 //    sin seguir el espectro real.
 //
-// Hoy las melodías se sirven desde `audio/` (mismo origen) y el modo REAL se
-// activa solo. Si algún día las pistas pasan a otro dominio con CORS
-// habilitado, poner MM_AUDIO_CORS = true y no cambia nada más en la página.
+// Hoy las melodías se sirven desde S3 (cross-origin) y el bucket NO manda
+// headers CORS, así que corre el modo OLEAJE. Para volver al modo REAL:
+// habilitar CORS en el bucket y recién ahí poner MM_AUDIO_CORS = true — en ese
+// orden, o el <audio> pide con crossOrigin, S3 lo rechaza y deja de sonar.
+// Paso a paso en `tools/LEEME-s3-cors.md`.
 const MM_AUDIO_CORS = false;
 const WAVE_BANDS = 56;
 
@@ -1113,6 +1426,173 @@ function saveEditModal() {
   showToast('Perfil actualizado');
 }
 
+// ───────────────────────── VALIDACIÓN DE ANI ─────────────────────────
+// Mismo chequeo de suscripción que Retofit y Mis Gastos en Orden: no hay
+// login ni cuenta — lo único que habilita la app es que el ANI (el número
+// de la línea) esté suscripto al club en el sistema de Playtown.
+//
+// Dos caminos:
+//   1. El operador redirige con ?ani=... — ese número ya lo validó la red,
+//      se guarda directo y se limpia de la URL.
+//   2. No hay ANI válido — se muestra una pantalla bloqueante para cargarlo
+//      a mano; hasta que la API confirme la suscripción no se puede navegar.
+//
+// La validación se renueva por mes calendario (no por 30 días): si el mes
+// cambió, se vuelve a pedir. La baja del servicio queda reflejada como
+// máximo al mes siguiente, que es el ciclo con el que factura la operadora.
+
+// ⚠️ Chequeo APAGADO momentáneamente: la app entra directo, sin pantalla de
+// verificación. Para reactivarlo alcanza con volver esto a `true` (y tener el
+// ANI_CLUB_ID real) — el resto de la sección queda intacto.
+const ANI_CHECK_ENABLED = false;
+
+const ANI_KEY = 'mm_ani';
+const ANI_VALIDATE_BASE = 'https://restito.playtown.com.ar:3000/club/checkClubSubscription/playar';
+// TODO: reemplazar por el club ID de MindMusic en el sistema de Playtown
+// (Retofit = 35). Con 'TODO' la API responde "no suscripto" y nadie entra.
+const ANI_CLUB_ID = 'TODO';
+const ANI_BEARER = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.pwI0ElRICzc-j85krDiV5nUkz_lZLwmiuJ3m790JNBQ';
+// Chile es el único mercado de este club, así que el prefijo es fijo y el
+// usuario sólo escribe su número (9 + 8 dígitos).
+const ANI_PREFIX = '56';
+
+function getSavedAni() {
+  const raw = localStorage.getItem(ANI_KEY);
+  if (!raw) return null;
+  try {
+    return JSON.parse(raw).ani || null;
+  } catch (e) {
+    return raw; // formato viejo: string pelado
+  }
+}
+
+function saveAni(ani) {
+  localStorage.setItem(ANI_KEY, JSON.stringify({ ani, validatedAt: new Date().toISOString() }));
+}
+
+function isAniValidThisMonth() {
+  const raw = localStorage.getItem(ANI_KEY);
+  if (!raw) return false;
+  try {
+    const { ani, validatedAt } = JSON.parse(raw);
+    if (!ani || !validatedAt) return false;
+    const saved = new Date(validatedAt);
+    const now = new Date();
+    return saved.getFullYear() === now.getFullYear() && saved.getMonth() === now.getMonth();
+  } catch (e) {
+    return false; // formato viejo = hay que revalidar
+  }
+}
+
+async function validateAniWithApi(fullAni) {
+  const res = await fetch(`${ANI_VALIDATE_BASE}/${encodeURIComponent(fullAni)}/${ANI_CLUB_ID}`, {
+    method: 'GET',
+    headers: { Authorization: `Bearer ${ANI_BEARER}` },
+    // La API tarda varios segundos; sin corte, una red caída deja el botón
+    // en "VERIFICANDO..." para siempre y el usuario no puede reintentar.
+    signal: AbortSignal.timeout(20000),
+  });
+  if (!res.ok) throw new Error('HTTP ' + res.status);
+  const data = await res.json();
+  return typeof data.result === 'object' && !!data.result?.ANI;
+}
+
+function checkAniInUrl() {
+  const params = new URLSearchParams(location.search);
+  const ani = params.get('ani');
+  if (!ani || !ani.trim()) return false;
+  saveAni(ani.trim()); // el ANI que inyecta el operador ya viene validado por la red
+  const url = new URL(location.href);
+  url.searchParams.delete('ani');
+  history.replaceState(null, '', url.toString());
+  return true;
+}
+
+// Normaliza lo que escribe el usuario a un ANI completo: saca todo lo que no
+// sea dígito, el 0 de larga distancia y el 56 si lo escribió igual.
+function normalizeAniInput(value) {
+  let digits = String(value).replace(/\D/g, '').replace(/^0+/, '');
+  if (digits.startsWith(ANI_PREFIX) && digits.length > 9) digits = digits.slice(ANI_PREFIX.length);
+  return digits;
+}
+
+function showAniGate() {
+  if (document.getElementById('ani-gate')) return;
+  const gate = document.createElement('div');
+  gate.id = 'ani-gate';
+  gate.className = 'ani-gate';
+  gate.innerHTML = `
+    <div class="ani-card" role="dialog" aria-modal="true" aria-labelledby="ani-title">
+      <svg class="ani-brand" viewBox="0 0 120 64" fill="none" aria-hidden="true"><defs><linearGradient id="mmWaveAni" x1="0" y1="0" x2="120" y2="0" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#8FD9E8"/><stop offset="50%" stop-color="#6E8EE8"/><stop offset="100%" stop-color="#B3A6EE"/></linearGradient></defs><path d="M4,46 C12,46 12,26 20,26 C27,26 27,46 34,46 C41,46 41,6 48,6 C54,6 54,58 60,58 C66,58 66,6 72,6 C79,6 79,46 86,46 C93,46 93,26 100,26 C108,26 108,46 116,46" stroke="url(#mmWaveAni)" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <h2 class="ani-title" id="ani-title">Verificá tu suscripción</h2>
+      <p class="ani-sub">Para escuchar MindMusic necesitás una suscripción activa. Ingresá el número de tu línea para verificarla.</p>
+      <label class="ani-label" for="ani-input">Número de celular</label>
+      <div class="ani-input-wrap">
+        <span class="ani-cc">🇨🇱 +${ANI_PREFIX}</span>
+        <input class="ani-input" type="tel" id="ani-input" placeholder="9 1234 5678" inputmode="numeric" maxlength="15" autocomplete="tel-national">
+      </div>
+      <p class="ani-error" id="ani-error"></p>
+      <button class="ani-btn" id="ani-btn" type="button">VERIFICAR</button>
+      <p class="ani-foot">Sin registro ni contraseña: sólo validamos que tu línea tenga el servicio activo.</p>
+    </div>`;
+  document.body.appendChild(gate);
+  document.body.style.overflow = 'hidden';
+
+  const input = gate.querySelector('#ani-input');
+  gate.querySelector('#ani-btn').addEventListener('click', handleAniValidate);
+  input.addEventListener('keydown', (e) => { if (e.key === 'Enter') handleAniValidate(); });
+  setTimeout(() => input.focus(), 150);
+}
+
+function hideAniGate() {
+  document.getElementById('ani-gate')?.remove();
+  document.body.style.overflow = '';
+}
+
+async function handleAniValidate() {
+  const btn = document.getElementById('ani-btn');
+  const errEl = document.getElementById('ani-error');
+  const input = document.getElementById('ani-input');
+  if (!btn || !errEl || !input) return;
+
+  errEl.textContent = '';
+  const digits = normalizeAniInput(input.value);
+  if (digits.length < 8) {
+    errEl.textContent = 'Ingresá un número válido, sin el 0 inicial.';
+    return;
+  }
+
+  btn.disabled = true;
+  btn.textContent = 'VERIFICANDO...';
+  try {
+    if (await validateAniWithApi(ANI_PREFIX + digits)) {
+      saveAni(ANI_PREFIX + digits);
+      hideAniGate();
+    } else {
+      errEl.textContent = 'Número no suscripto. Contactá a tu operadora para activar el servicio.';
+    }
+  } catch (e) {
+    errEl.textContent = 'No pudimos verificar. Revisá tu conexión e intentá de nuevo.';
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'VERIFICAR';
+  }
+}
+
+// Guard de suscripción. Se llama antes de inicializar cualquier página: la
+// página se arma igual detrás del velo (para que quede lista al validar),
+// pero el overlay cubre todo y no deja navegar.
+function initAniGuard() {
+  checkAniInUrl(); // aun apagado: guarda el ANI de la operadora y limpia la URL
+  if (!ANI_CHECK_ENABLED) return;
+  if (ANI_CLUB_ID === 'TODO') {
+    console.warn('[ANI] ANI_CLUB_ID sin configurar en app.js — ninguna validación va a pasar.');
+  }
+  if (!isAniValidThisMonth()) showAniGate();
+}
+
+// ───────────────────────── ROUTER ─────────────────────────
+
 function getCountry() {
   const parts = location.pathname.split('/').filter(Boolean);
 
@@ -1120,12 +1600,12 @@ function getCountry() {
 
   return parts.find(part => countries.includes(part)) || null;
 }
-// ───────────────────────── ROUTER ─────────────────────────
 
 document.addEventListener('DOMContentLoaded', () => {
-
   const country = getCountry();
   console.log(country);
+
+  initAniGuard();
 
   if (document.getElementById('home-container')) { initHome(); return; }
   if (document.getElementById('explorar-container')) { initExplorar(); return; }

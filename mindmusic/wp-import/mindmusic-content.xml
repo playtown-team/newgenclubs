@@ -1,0 +1,950 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+  xmlns:excerpt="http://wordpress.org/export/1.2/excerpt/"
+  xmlns:content="http://purl.org/rss/1.0/modules/content/"
+  xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+  xmlns:dc="http://purl.org/dc/elements/1.1/"
+  xmlns:wp="http://wordpress.org/export/1.2/">
+<channel>
+  <title>MindMusic — Contenido</title>
+  <link>https://contenidos.vip/mindmusic</link>
+  <description>Estados de ánimo, playlists emocionales y audios sueltos</description>
+  <pubDate>Tue, 01 Sep 2026 19:06:22 GMT</pubDate>
+  <language>es</language>
+  <wp:wxr_version>1.2</wp:wxr_version>
+  <wp:base_site_url>https://contenidos.vip/mindmusic</wp:base_site_url>
+  <wp:base_blog_url>https://contenidos.vip/mindmusic</wp:base_blog_url>
+  <wp:author>
+    <wp:author_id>1</wp:author_id>
+    <wp:author_login><![CDATA[admin]]></wp:author_login>
+    <wp:author_email><![CDATA[]]></wp:author_email>
+    <wp:author_display_name><![CDATA[admin]]></wp:author_display_name>
+    <wp:author_first_name><![CDATA[]]></wp:author_first_name>
+    <wp:author_last_name><![CDATA[]]></wp:author_last_name>
+  </wp:author>
+  <wp:category>
+    <wp:term_id>100</wp:term_id>
+    <wp:category_nicename>estados-de-animo</wp:category_nicename>
+    <wp:category_parent></wp:category_parent>
+    <wp:cat_name><![CDATA[Estados de Ánimo]]></wp:cat_name>
+  </wp:category>
+  <wp:category>
+    <wp:term_id>101</wp:term_id>
+    <wp:category_nicename>playlists</wp:category_nicename>
+    <wp:category_parent></wp:category_parent>
+    <wp:cat_name><![CDATA[Playlists]]></wp:cat_name>
+  </wp:category>
+  <wp:category>
+    <wp:term_id>102</wp:term_id>
+    <wp:category_nicename>audios</wp:category_nicename>
+    <wp:category_parent></wp:category_parent>
+    <wp:cat_name><![CDATA[Audios]]></wp:cat_name>
+  </wp:category>
+
+  <item>
+    <title><![CDATA[Calma]]></title>
+    <link>https://contenidos.vip/mindmusic/estado-calma/</link>
+    <pubDate>Mon, 05 Jan 2026 12:00:00 GMT</pubDate>
+    <dc:creator><![CDATA[admin]]></dc:creator>
+    <guid isPermaLink="false">https://contenidos.vip/mindmusic/?p=2001</guid>
+    <description></description>
+    <content:encoded><![CDATA[{
+  "id": "calma",
+  "name": "Calma",
+  "subtitle": "Paz inmediata",
+  "cta": "CALMAR",
+  "icon": "leaf",
+  "ink": "#4FB8C4",
+  "grad": "linear-gradient(135deg,#5FCBD6,#2E7D8C)",
+  "photo": "https://images.unsplash.com/photo-1580920824014-54845d91a8ad",
+  "order": 0
+}]]></content:encoded>
+    <excerpt:encoded><![CDATA[Paz inmediata]]></excerpt:encoded>
+    <wp:post_id>2001</wp:post_id>
+    <wp:post_date><![CDATA[2026-01-05 12:00:00]]></wp:post_date>
+    <wp:post_date_gmt><![CDATA[2026-01-05 15:00:00]]></wp:post_date_gmt>
+    <wp:post_modified><![CDATA[2026-01-05 12:00:00]]></wp:post_modified>
+    <wp:post_modified_gmt><![CDATA[2026-01-05 15:00:00]]></wp:post_modified_gmt>
+    <wp:comment_status><![CDATA[closed]]></wp:comment_status>
+    <wp:ping_status><![CDATA[closed]]></wp:ping_status>
+    <wp:post_name><![CDATA[estado-calma]]></wp:post_name>
+    <wp:status><![CDATA[publish]]></wp:status>
+    <wp:post_parent>0</wp:post_parent>
+    <wp:menu_order>0</wp:menu_order>
+    <wp:post_type><![CDATA[post]]></wp:post_type>
+    <wp:post_password></wp:post_password>
+    <wp:is_sticky>0</wp:is_sticky>
+    <category domain="category" nicename="estados-de-animo"><![CDATA[Estados de Ánimo]]></category>
+  </item>
+
+  <item>
+    <title><![CDATA[Energía]]></title>
+    <link>https://contenidos.vip/mindmusic/estado-energia/</link>
+    <pubDate>Tue, 06 Jan 2026 12:00:00 GMT</pubDate>
+    <dc:creator><![CDATA[admin]]></dc:creator>
+    <guid isPermaLink="false">https://contenidos.vip/mindmusic/?p=2002</guid>
+    <description></description>
+    <content:encoded><![CDATA[{
+  "id": "energia",
+  "name": "Energía",
+  "subtitle": "Activa tu cuerpo",
+  "cta": "ELEVAR",
+  "icon": "bolt",
+  "ink": "#E2703A",
+  "grad": "linear-gradient(135deg,#F0924F,#C6491F)",
+  "photo": "https://images.unsplash.com/photo-1489493512598-d08130f49bea",
+  "order": 1
+}]]></content:encoded>
+    <excerpt:encoded><![CDATA[Activa tu cuerpo]]></excerpt:encoded>
+    <wp:post_id>2002</wp:post_id>
+    <wp:post_date><![CDATA[2026-01-06 12:00:00]]></wp:post_date>
+    <wp:post_date_gmt><![CDATA[2026-01-06 15:00:00]]></wp:post_date_gmt>
+    <wp:post_modified><![CDATA[2026-01-06 12:00:00]]></wp:post_modified>
+    <wp:post_modified_gmt><![CDATA[2026-01-06 15:00:00]]></wp:post_modified_gmt>
+    <wp:comment_status><![CDATA[closed]]></wp:comment_status>
+    <wp:ping_status><![CDATA[closed]]></wp:ping_status>
+    <wp:post_name><![CDATA[estado-energia]]></wp:post_name>
+    <wp:status><![CDATA[publish]]></wp:status>
+    <wp:post_parent>0</wp:post_parent>
+    <wp:menu_order>0</wp:menu_order>
+    <wp:post_type><![CDATA[post]]></wp:post_type>
+    <wp:post_password></wp:post_password>
+    <wp:is_sticky>0</wp:is_sticky>
+    <category domain="category" nicename="estados-de-animo"><![CDATA[Estados de Ánimo]]></category>
+  </item>
+
+  <item>
+    <title><![CDATA[Foco]]></title>
+    <link>https://contenidos.vip/mindmusic/estado-foco/</link>
+    <pubDate>Wed, 07 Jan 2026 12:00:00 GMT</pubDate>
+    <dc:creator><![CDATA[admin]]></dc:creator>
+    <guid isPermaLink="false">https://contenidos.vip/mindmusic/?p=2003</guid>
+    <description></description>
+    <content:encoded><![CDATA[{
+  "id": "foco",
+  "name": "Foco",
+  "subtitle": "Claridad mental",
+  "cta": "ENFOCAR",
+  "icon": "target",
+  "ink": "#8C6BD6",
+  "grad": "linear-gradient(135deg,#A088E3,#5B3DA8)",
+  "photo": "https://images.unsplash.com/photo-1744040982238-867d6a3f907f",
+  "order": 2
+}]]></content:encoded>
+    <excerpt:encoded><![CDATA[Claridad mental]]></excerpt:encoded>
+    <wp:post_id>2003</wp:post_id>
+    <wp:post_date><![CDATA[2026-01-07 12:00:00]]></wp:post_date>
+    <wp:post_date_gmt><![CDATA[2026-01-07 15:00:00]]></wp:post_date_gmt>
+    <wp:post_modified><![CDATA[2026-01-07 12:00:00]]></wp:post_modified>
+    <wp:post_modified_gmt><![CDATA[2026-01-07 15:00:00]]></wp:post_modified_gmt>
+    <wp:comment_status><![CDATA[closed]]></wp:comment_status>
+    <wp:ping_status><![CDATA[closed]]></wp:ping_status>
+    <wp:post_name><![CDATA[estado-foco]]></wp:post_name>
+    <wp:status><![CDATA[publish]]></wp:status>
+    <wp:post_parent>0</wp:post_parent>
+    <wp:menu_order>0</wp:menu_order>
+    <wp:post_type><![CDATA[post]]></wp:post_type>
+    <wp:post_password></wp:post_password>
+    <wp:is_sticky>0</wp:is_sticky>
+    <category domain="category" nicename="estados-de-animo"><![CDATA[Estados de Ánimo]]></category>
+  </item>
+
+  <item>
+    <title><![CDATA[Flujo]]></title>
+    <link>https://contenidos.vip/mindmusic/estado-flujo/</link>
+    <pubDate>Thu, 08 Jan 2026 12:00:00 GMT</pubDate>
+    <dc:creator><![CDATA[admin]]></dc:creator>
+    <guid isPermaLink="false">https://contenidos.vip/mindmusic/?p=2004</guid>
+    <description></description>
+    <content:encoded><![CDATA[{
+  "id": "flujo",
+  "name": "Flujo",
+  "subtitle": "Fluye sin esfuerzo",
+  "cta": "FLUIR",
+  "icon": "infinity",
+  "ink": "#33A893",
+  "grad": "linear-gradient(135deg,#4DBFA8,#1F7A69)",
+  "photo": "https://images.unsplash.com/photo-1660613964716-12b8a0223e9a",
+  "order": 3
+}]]></content:encoded>
+    <excerpt:encoded><![CDATA[Fluye sin esfuerzo]]></excerpt:encoded>
+    <wp:post_id>2004</wp:post_id>
+    <wp:post_date><![CDATA[2026-01-08 12:00:00]]></wp:post_date>
+    <wp:post_date_gmt><![CDATA[2026-01-08 15:00:00]]></wp:post_date_gmt>
+    <wp:post_modified><![CDATA[2026-01-08 12:00:00]]></wp:post_modified>
+    <wp:post_modified_gmt><![CDATA[2026-01-08 15:00:00]]></wp:post_modified_gmt>
+    <wp:comment_status><![CDATA[closed]]></wp:comment_status>
+    <wp:ping_status><![CDATA[closed]]></wp:ping_status>
+    <wp:post_name><![CDATA[estado-flujo]]></wp:post_name>
+    <wp:status><![CDATA[publish]]></wp:status>
+    <wp:post_parent>0</wp:post_parent>
+    <wp:menu_order>0</wp:menu_order>
+    <wp:post_type><![CDATA[post]]></wp:post_type>
+    <wp:post_password></wp:post_password>
+    <wp:is_sticky>0</wp:is_sticky>
+    <category domain="category" nicename="estados-de-animo"><![CDATA[Estados de Ánimo]]></category>
+  </item>
+
+  <item>
+    <title><![CDATA[Alegría]]></title>
+    <link>https://contenidos.vip/mindmusic/estado-alegria/</link>
+    <pubDate>Fri, 09 Jan 2026 12:00:00 GMT</pubDate>
+    <dc:creator><![CDATA[admin]]></dc:creator>
+    <guid isPermaLink="false">https://contenidos.vip/mindmusic/?p=2005</guid>
+    <description></description>
+    <content:encoded><![CDATA[{
+  "id": "alegria",
+  "name": "Alegría",
+  "subtitle": "Sube tu ánimo",
+  "cta": "CELEBRAR",
+  "icon": "sun",
+  "ink": "#E8AB3E",
+  "grad": "linear-gradient(135deg,#F3C15E,#D98A22)",
+  "photo": "https://images.unsplash.com/photo-1558306961-3e9e4ae532f6",
+  "order": 4
+}]]></content:encoded>
+    <excerpt:encoded><![CDATA[Sube tu ánimo]]></excerpt:encoded>
+    <wp:post_id>2005</wp:post_id>
+    <wp:post_date><![CDATA[2026-01-09 12:00:00]]></wp:post_date>
+    <wp:post_date_gmt><![CDATA[2026-01-09 15:00:00]]></wp:post_date_gmt>
+    <wp:post_modified><![CDATA[2026-01-09 12:00:00]]></wp:post_modified>
+    <wp:post_modified_gmt><![CDATA[2026-01-09 15:00:00]]></wp:post_modified_gmt>
+    <wp:comment_status><![CDATA[closed]]></wp:comment_status>
+    <wp:ping_status><![CDATA[closed]]></wp:ping_status>
+    <wp:post_name><![CDATA[estado-alegria]]></wp:post_name>
+    <wp:status><![CDATA[publish]]></wp:status>
+    <wp:post_parent>0</wp:post_parent>
+    <wp:menu_order>0</wp:menu_order>
+    <wp:post_type><![CDATA[post]]></wp:post_type>
+    <wp:post_password></wp:post_password>
+    <wp:is_sticky>0</wp:is_sticky>
+    <category domain="category" nicename="estados-de-animo"><![CDATA[Estados de Ánimo]]></category>
+  </item>
+
+  <item>
+    <title><![CDATA[Relax]]></title>
+    <link>https://contenidos.vip/mindmusic/estado-relax/</link>
+    <pubDate>Sat, 10 Jan 2026 12:00:00 GMT</pubDate>
+    <dc:creator><![CDATA[admin]]></dc:creator>
+    <guid isPermaLink="false">https://contenidos.vip/mindmusic/?p=2006</guid>
+    <description></description>
+    <content:encoded><![CDATA[{
+  "id": "relax",
+  "name": "Relax",
+  "subtitle": "Cero estrés",
+  "cta": "RELAJAR",
+  "icon": "moon",
+  "ink": "#6F7FD1",
+  "grad": "linear-gradient(135deg,#8B98E0,#4A56A8)",
+  "photo": "https://images.unsplash.com/photo-1477840539360-4a1d23071046",
+  "order": 5
+}]]></content:encoded>
+    <excerpt:encoded><![CDATA[Cero estrés]]></excerpt:encoded>
+    <wp:post_id>2006</wp:post_id>
+    <wp:post_date><![CDATA[2026-01-10 12:00:00]]></wp:post_date>
+    <wp:post_date_gmt><![CDATA[2026-01-10 15:00:00]]></wp:post_date_gmt>
+    <wp:post_modified><![CDATA[2026-01-10 12:00:00]]></wp:post_modified>
+    <wp:post_modified_gmt><![CDATA[2026-01-10 15:00:00]]></wp:post_modified_gmt>
+    <wp:comment_status><![CDATA[closed]]></wp:comment_status>
+    <wp:ping_status><![CDATA[closed]]></wp:ping_status>
+    <wp:post_name><![CDATA[estado-relax]]></wp:post_name>
+    <wp:status><![CDATA[publish]]></wp:status>
+    <wp:post_parent>0</wp:post_parent>
+    <wp:menu_order>0</wp:menu_order>
+    <wp:post_type><![CDATA[post]]></wp:post_type>
+    <wp:post_password></wp:post_password>
+    <wp:is_sticky>0</wp:is_sticky>
+    <category domain="category" nicename="estados-de-animo"><![CDATA[Estados de Ánimo]]></category>
+  </item>
+
+  <item>
+    <title><![CDATA[Superación]]></title>
+    <link>https://contenidos.vip/mindmusic/estado-superacion/</link>
+    <pubDate>Sun, 11 Jan 2026 12:00:00 GMT</pubDate>
+    <dc:creator><![CDATA[admin]]></dc:creator>
+    <guid isPermaLink="false">https://contenidos.vip/mindmusic/?p=2007</guid>
+    <description></description>
+    <content:encoded><![CDATA[{
+  "id": "superacion",
+  "name": "Superación",
+  "subtitle": "Fortaleza interior",
+  "cta": "SUPERAR",
+  "icon": "mountain",
+  "ink": "#D1553C",
+  "grad": "linear-gradient(135deg,#E17454,#A83A24)",
+  "photo": "https://images.unsplash.com/photo-1550952953-b21b952780e1",
+  "order": 6
+}]]></content:encoded>
+    <excerpt:encoded><![CDATA[Fortaleza interior]]></excerpt:encoded>
+    <wp:post_id>2007</wp:post_id>
+    <wp:post_date><![CDATA[2026-01-11 12:00:00]]></wp:post_date>
+    <wp:post_date_gmt><![CDATA[2026-01-11 15:00:00]]></wp:post_date_gmt>
+    <wp:post_modified><![CDATA[2026-01-11 12:00:00]]></wp:post_modified>
+    <wp:post_modified_gmt><![CDATA[2026-01-11 15:00:00]]></wp:post_modified_gmt>
+    <wp:comment_status><![CDATA[closed]]></wp:comment_status>
+    <wp:ping_status><![CDATA[closed]]></wp:ping_status>
+    <wp:post_name><![CDATA[estado-superacion]]></wp:post_name>
+    <wp:status><![CDATA[publish]]></wp:status>
+    <wp:post_parent>0</wp:post_parent>
+    <wp:menu_order>0</wp:menu_order>
+    <wp:post_type><![CDATA[post]]></wp:post_type>
+    <wp:post_password></wp:post_password>
+    <wp:is_sticky>0</wp:is_sticky>
+    <category domain="category" nicename="estados-de-animo"><![CDATA[Estados de Ánimo]]></category>
+  </item>
+
+  <item>
+    <title><![CDATA[Silencio Interior]]></title>
+    <link>https://contenidos.vip/mindmusic/playlist-cal-pl/</link>
+    <pubDate>Mon, 02 Feb 2026 12:00:00 GMT</pubDate>
+    <dc:creator><![CDATA[admin]]></dc:creator>
+    <guid isPermaLink="false">https://contenidos.vip/mindmusic/?p=3001</guid>
+    <description></description>
+    <content:encoded><![CDATA[{
+  "id": "cal-pl",
+  "moodId": "calma",
+  "contentType": "playlists",
+  "title": "Silencio Interior",
+  "desc": "Una selección de pistas suaves para acompañar momentos de introspección.",
+  "photo": "https://images.unsplash.com/photo-1634023233766-0c16b151bfb0",
+  "order": 0,
+  "tracks": [
+    {
+      "title": "Ease",
+      "duration": 174,
+      "audioUrl": "https://ptown-wap-ar.s3.sa-east-1.amazonaws.com/mindmusic/music/relax/ease.m4a",
+      "photo": "https://images.unsplash.com/photo-1532979772520-f2763956cce0"
+    },
+    {
+      "title": "Unwind",
+      "duration": 181,
+      "audioUrl": "https://ptown-wap-ar.s3.sa-east-1.amazonaws.com/mindmusic/music/relax/unwind.m4a",
+      "photo": "https://images.unsplash.com/photo-1445112098124-3e76dd67983c"
+    },
+    {
+      "title": "Drift",
+      "duration": 119,
+      "audioUrl": "https://ptown-wap-ar.s3.sa-east-1.amazonaws.com/mindmusic/music/relax/drift.m4a",
+      "photo": "https://images.unsplash.com/photo-1734830186361-6001d1a7ae37"
+    },
+    {
+      "title": "Quiet Hour",
+      "duration": 162,
+      "audioUrl": "https://ptown-wap-ar.s3.sa-east-1.amazonaws.com/mindmusic/music/relax/quiet-hour.m4a",
+      "photo": "https://images.unsplash.com/photo-1614640672303-537679057c33"
+    },
+    {
+      "title": "Slow Down",
+      "duration": 168,
+      "audioUrl": "https://ptown-wap-ar.s3.sa-east-1.amazonaws.com/mindmusic/music/relax/slow-down.m4a",
+      "photo": "https://images.unsplash.com/photo-1503891617560-5b8c2e28cbf6"
+    },
+    {
+      "title": "Between Two Breaths",
+      "duration": 178,
+      "audioUrl": "https://ptown-wap-ar.s3.sa-east-1.amazonaws.com/mindmusic/music/relax/Between_Two_Breaths.mp3",
+      "photo": "https://images.unsplash.com/photo-1518708909080-704599b19972"
+    },
+    {
+      "title": "Where Water Meets Willow",
+      "duration": 168,
+      "audioUrl": "https://ptown-wap-ar.s3.sa-east-1.amazonaws.com/mindmusic/music/relax/Where_Water_Meets_Willow.mp3",
+      "photo": "https://images.unsplash.com/photo-1629040082543-4e999cd0aa45"
+    },
+    {
+      "title": "A Gentle Place to Land",
+      "duration": 177,
+      "audioUrl": "https://ptown-wap-ar.s3.sa-east-1.amazonaws.com/mindmusic/music/relax/A_Gentle_Place_to_Land.mp3",
+      "photo": "https://images.unsplash.com/photo-1601276174812-63280a55656e"
+    },
+    {
+      "title": "Holding the Quiet",
+      "duration": 177,
+      "audioUrl": "https://ptown-wap-ar.s3.sa-east-1.amazonaws.com/mindmusic/music/relax/Holding_The_Quiet.mp3",
+      "photo": "https://images.unsplash.com/photo-1568961248350-742799cdc67a"
+    },
+    {
+      "title": "Beneath the Amber Canopy",
+      "duration": 172,
+      "audioUrl": "https://ptown-wap-ar.s3.sa-east-1.amazonaws.com/mindmusic/music/relax/Beneath_the_Amber_Canopy.mp3",
+      "photo": "https://images.unsplash.com/photo-1542961870-4dc1dfe0986c"
+    }
+  ]
+}]]></content:encoded>
+    <excerpt:encoded><![CDATA[Una selección de pistas suaves para acompañar momentos de introspección.]]></excerpt:encoded>
+    <wp:post_id>3001</wp:post_id>
+    <wp:post_date><![CDATA[2026-02-02 12:00:00]]></wp:post_date>
+    <wp:post_date_gmt><![CDATA[2026-02-02 15:00:00]]></wp:post_date_gmt>
+    <wp:post_modified><![CDATA[2026-02-02 12:00:00]]></wp:post_modified>
+    <wp:post_modified_gmt><![CDATA[2026-02-02 15:00:00]]></wp:post_modified_gmt>
+    <wp:comment_status><![CDATA[closed]]></wp:comment_status>
+    <wp:ping_status><![CDATA[closed]]></wp:ping_status>
+    <wp:post_name><![CDATA[playlist-cal-pl]]></wp:post_name>
+    <wp:status><![CDATA[publish]]></wp:status>
+    <wp:post_parent>0</wp:post_parent>
+    <wp:menu_order>0</wp:menu_order>
+    <wp:post_type><![CDATA[post]]></wp:post_type>
+    <wp:post_password></wp:post_password>
+    <wp:is_sticky>0</wp:is_sticky>
+    <category domain="category" nicename="playlists"><![CDATA[Playlists]]></category>
+  </item>
+
+  <item>
+    <title><![CDATA[Activación Total]]></title>
+    <link>https://contenidos.vip/mindmusic/playlist-ene-pl/</link>
+    <pubDate>Tue, 03 Feb 2026 12:00:00 GMT</pubDate>
+    <dc:creator><![CDATA[admin]]></dc:creator>
+    <guid isPermaLink="false">https://contenidos.vip/mindmusic/?p=3002</guid>
+    <description></description>
+    <content:encoded><![CDATA[{
+  "id": "ene-pl",
+  "moodId": "energia",
+  "contentType": "playlists",
+  "title": "Activación Total",
+  "desc": "Ritmos que suben la energía antes de entrenar o encarar el día.",
+  "photo": "https://images.unsplash.com/photo-1643724763266-a34c85397d1d",
+  "order": 1,
+  "tracks": [
+    {
+      "title": "Sunrise",
+      "duration": 176,
+      "audioUrl": "https://ptown-wap-ar.s3.sa-east-1.amazonaws.com/mindmusic/music/alegria/sunrise.m4a",
+      "photo": "https://images.unsplash.com/photo-1774252338397-167cef2c68fd"
+    },
+    {
+      "title": "Lightness",
+      "duration": 155,
+      "audioUrl": "https://ptown-wap-ar.s3.sa-east-1.amazonaws.com/mindmusic/music/alegria/lightness.m4a",
+      "photo": "https://images.unsplash.com/photo-1611244806964-91d204d4a2a7"
+    },
+    {
+      "title": "Bright Side",
+      "duration": 175,
+      "audioUrl": "https://ptown-wap-ar.s3.sa-east-1.amazonaws.com/mindmusic/music/alegria/bright-side.m4a",
+      "photo": "https://images.unsplash.com/photo-1541417904950-b855846fe074"
+    },
+    {
+      "title": "Glow",
+      "duration": 182,
+      "audioUrl": "https://ptown-wap-ar.s3.sa-east-1.amazonaws.com/mindmusic/music/alegria/glow.m4a",
+      "photo": "https://images.unsplash.com/photo-1532028205213-4c4fa81306d4"
+    },
+    {
+      "title": "Uplift",
+      "duration": 173,
+      "audioUrl": "https://ptown-wap-ar.s3.sa-east-1.amazonaws.com/mindmusic/music/alegria/uplift.m4a",
+      "photo": "https://images.unsplash.com/photo-1520206444322-d2df0dd4e78e"
+    },
+    {
+      "title": "Golden Hour",
+      "duration": 173,
+      "audioUrl": "https://ptown-wap-ar.s3.sa-east-1.amazonaws.com/mindmusic/music/alegria/golden-hour.m4a",
+      "photo": "https://images.unsplash.com/photo-1593264787646-f07221d3b7de"
+    },
+    {
+      "title": "Sunlight Through the Leaves",
+      "duration": 150,
+      "audioUrl": "https://ptown-wap-ar.s3.sa-east-1.amazonaws.com/mindmusic/music/alegria/Sunlight_Through_The_Leaves.mp3",
+      "photo": "https://images.unsplash.com/photo-1489644484856-f3ddc0adc923"
+    },
+    {
+      "title": "The Gravity of Morning",
+      "duration": 174,
+      "audioUrl": "https://ptown-wap-ar.s3.sa-east-1.amazonaws.com/mindmusic/music/alegria/The_Gravity_of_Morning.mp3",
+      "photo": "https://images.unsplash.com/photo-1662038271111-5b1c0b4157e8"
+    },
+    {
+      "title": "A Place to Leave Your Coat",
+      "duration": 179,
+      "audioUrl": "https://ptown-wap-ar.s3.sa-east-1.amazonaws.com/mindmusic/music/alegria/A_Place_to_Leave_Your_Coat.mp3",
+      "photo": "https://images.unsplash.com/photo-1561334112-5cc34885f22f"
+    },
+    {
+      "title": "Linen and Slow Light",
+      "duration": 180,
+      "audioUrl": "https://ptown-wap-ar.s3.sa-east-1.amazonaws.com/mindmusic/music/alegria/Linen_and_Slow_Light.mp3",
+      "photo": "https://images.unsplash.com/photo-1682421938316-4b186e25174c"
+    }
+  ]
+}]]></content:encoded>
+    <excerpt:encoded><![CDATA[Ritmos que suben la energía antes de entrenar o encarar el día.]]></excerpt:encoded>
+    <wp:post_id>3002</wp:post_id>
+    <wp:post_date><![CDATA[2026-02-03 12:00:00]]></wp:post_date>
+    <wp:post_date_gmt><![CDATA[2026-02-03 15:00:00]]></wp:post_date_gmt>
+    <wp:post_modified><![CDATA[2026-02-03 12:00:00]]></wp:post_modified>
+    <wp:post_modified_gmt><![CDATA[2026-02-03 15:00:00]]></wp:post_modified_gmt>
+    <wp:comment_status><![CDATA[closed]]></wp:comment_status>
+    <wp:ping_status><![CDATA[closed]]></wp:ping_status>
+    <wp:post_name><![CDATA[playlist-ene-pl]]></wp:post_name>
+    <wp:status><![CDATA[publish]]></wp:status>
+    <wp:post_parent>0</wp:post_parent>
+    <wp:menu_order>0</wp:menu_order>
+    <wp:post_type><![CDATA[post]]></wp:post_type>
+    <wp:post_password></wp:post_password>
+    <wp:is_sticky>0</wp:is_sticky>
+    <category domain="category" nicename="playlists"><![CDATA[Playlists]]></category>
+  </item>
+
+  <item>
+    <title><![CDATA[Zona de Trabajo]]></title>
+    <link>https://contenidos.vip/mindmusic/playlist-foc-pl/</link>
+    <pubDate>Wed, 04 Feb 2026 12:00:00 GMT</pubDate>
+    <dc:creator><![CDATA[admin]]></dc:creator>
+    <guid isPermaLink="false">https://contenidos.vip/mindmusic/?p=3003</guid>
+    <description></description>
+    <content:encoded><![CDATA[{
+  "id": "foc-pl",
+  "moodId": "foco",
+  "contentType": "playlists",
+  "title": "Zona de Trabajo",
+  "desc": "Música instrumental pensada para trabajar sin distracciones.",
+  "photo": "https://images.unsplash.com/photo-1583606638441-b9c746100447",
+  "order": 2,
+  "tracks": [
+    {
+      "title": "Clarity",
+      "duration": 178,
+      "audioUrl": "https://ptown-wap-ar.s3.sa-east-1.amazonaws.com/mindmusic/music/foco/clarity.m4a",
+      "photo": "https://images.unsplash.com/photo-1473893604213-3df9c15611c0"
+    },
+    {
+      "title": "Focus Point",
+      "duration": 166,
+      "audioUrl": "https://ptown-wap-ar.s3.sa-east-1.amazonaws.com/mindmusic/music/foco/focus-point.m4a",
+      "photo": "https://images.unsplash.com/photo-1655815226187-113f3b3d7510"
+    },
+    {
+      "title": "Deep Work",
+      "duration": 179,
+      "audioUrl": "https://ptown-wap-ar.s3.sa-east-1.amazonaws.com/mindmusic/music/foco/deep-work.m4a",
+      "photo": "https://images.unsplash.com/photo-1694636775862-c35027446a0f"
+    },
+    {
+      "title": "Still Mind",
+      "duration": 171,
+      "audioUrl": "https://ptown-wap-ar.s3.sa-east-1.amazonaws.com/mindmusic/music/foco/still-mind.m4a",
+      "photo": "https://images.unsplash.com/photo-1613578519724-22fdb5d06388"
+    },
+    {
+      "title": "Sharp Edge",
+      "duration": 159,
+      "audioUrl": "https://ptown-wap-ar.s3.sa-east-1.amazonaws.com/mindmusic/music/foco/sharp-edge.m4a",
+      "photo": "https://images.unsplash.com/photo-1561921348-89b3db247320"
+    },
+    {
+      "title": "The Clear Meridian",
+      "duration": 168,
+      "audioUrl": "https://ptown-wap-ar.s3.sa-east-1.amazonaws.com/mindmusic/music/foco/The_Clear_Meridian.mp3",
+      "photo": "https://images.unsplash.com/photo-1673369824122-e150258b9862"
+    },
+    {
+      "title": "Midnight Ink and Rain",
+      "duration": 174,
+      "audioUrl": "https://ptown-wap-ar.s3.sa-east-1.amazonaws.com/mindmusic/music/foco/Midnight_Ink_and_Rain.mp3",
+      "photo": "https://images.unsplash.com/photo-1587736891536-beb1e48bb22b"
+    },
+    {
+      "title": "The Quiet Horizon",
+      "duration": 177,
+      "audioUrl": "https://ptown-wap-ar.s3.sa-east-1.amazonaws.com/mindmusic/music/foco/The_Quiet_Horizon.mp3",
+      "photo": "https://images.unsplash.com/photo-1511458206431-afcf3cebe562"
+    },
+    {
+      "title": "Room at Sundown",
+      "duration": 178,
+      "audioUrl": "https://ptown-wap-ar.s3.sa-east-1.amazonaws.com/mindmusic/music/foco/Room_at_Sundown.mp3",
+      "photo": "https://images.unsplash.com/photo-1643865420909-2462d84339af"
+    }
+  ]
+}]]></content:encoded>
+    <excerpt:encoded><![CDATA[Música instrumental pensada para trabajar sin distracciones.]]></excerpt:encoded>
+    <wp:post_id>3003</wp:post_id>
+    <wp:post_date><![CDATA[2026-02-04 12:00:00]]></wp:post_date>
+    <wp:post_date_gmt><![CDATA[2026-02-04 15:00:00]]></wp:post_date_gmt>
+    <wp:post_modified><![CDATA[2026-02-04 12:00:00]]></wp:post_modified>
+    <wp:post_modified_gmt><![CDATA[2026-02-04 15:00:00]]></wp:post_modified_gmt>
+    <wp:comment_status><![CDATA[closed]]></wp:comment_status>
+    <wp:ping_status><![CDATA[closed]]></wp:ping_status>
+    <wp:post_name><![CDATA[playlist-foc-pl]]></wp:post_name>
+    <wp:status><![CDATA[publish]]></wp:status>
+    <wp:post_parent>0</wp:post_parent>
+    <wp:menu_order>0</wp:menu_order>
+    <wp:post_type><![CDATA[post]]></wp:post_type>
+    <wp:post_password></wp:post_password>
+    <wp:is_sticky>0</wp:is_sticky>
+    <category domain="category" nicename="playlists"><![CDATA[Playlists]]></category>
+  </item>
+
+  <item>
+    <title><![CDATA[Concentración]]></title>
+    <link>https://contenidos.vip/mindmusic/playlist-flu-pl/</link>
+    <pubDate>Thu, 05 Feb 2026 12:00:00 GMT</pubDate>
+    <dc:creator><![CDATA[admin]]></dc:creator>
+    <guid isPermaLink="false">https://contenidos.vip/mindmusic/?p=3004</guid>
+    <description></description>
+    <content:encoded><![CDATA[{
+  "id": "flu-pl",
+  "moodId": "flujo",
+  "contentType": "playlists",
+  "title": "Concentración",
+  "desc": "Una selección larga para sostener el estado de flujo creativo.",
+  "photo": "https://images.unsplash.com/photo-1504202252096-09abfa127db7",
+  "order": 3,
+  "tracks": [
+    {
+      "title": "Still Mind",
+      "duration": 171,
+      "audioUrl": "https://ptown-wap-ar.s3.sa-east-1.amazonaws.com/mindmusic/music/foco/still-mind.m4a",
+      "photo": "https://images.unsplash.com/photo-1613578519724-22fdb5d06388"
+    },
+    {
+      "title": "Deep Work",
+      "duration": 179,
+      "audioUrl": "https://ptown-wap-ar.s3.sa-east-1.amazonaws.com/mindmusic/music/foco/deep-work.m4a",
+      "photo": "https://images.unsplash.com/photo-1694636775862-c35027446a0f"
+    },
+    {
+      "title": "Sharp Edge",
+      "duration": 159,
+      "audioUrl": "https://ptown-wap-ar.s3.sa-east-1.amazonaws.com/mindmusic/music/foco/sharp-edge.m4a",
+      "photo": "https://images.unsplash.com/photo-1561921348-89b3db247320"
+    },
+    {
+      "title": "Focus Point",
+      "duration": 166,
+      "audioUrl": "https://ptown-wap-ar.s3.sa-east-1.amazonaws.com/mindmusic/music/foco/focus-point.m4a",
+      "photo": "https://images.unsplash.com/photo-1655815226187-113f3b3d7510"
+    },
+    {
+      "title": "Clarity",
+      "duration": 178,
+      "audioUrl": "https://ptown-wap-ar.s3.sa-east-1.amazonaws.com/mindmusic/music/foco/clarity.m4a",
+      "photo": "https://images.unsplash.com/photo-1473893604213-3df9c15611c0"
+    },
+    {
+      "title": "Midnight Ink and Rain",
+      "duration": 174,
+      "audioUrl": "https://ptown-wap-ar.s3.sa-east-1.amazonaws.com/mindmusic/music/foco/Midnight_Ink_and_Rain.mp3",
+      "photo": "https://images.unsplash.com/photo-1587736891536-beb1e48bb22b"
+    },
+    {
+      "title": "Room at Sundown",
+      "duration": 178,
+      "audioUrl": "https://ptown-wap-ar.s3.sa-east-1.amazonaws.com/mindmusic/music/foco/Room_at_Sundown.mp3",
+      "photo": "https://images.unsplash.com/photo-1643865420909-2462d84339af"
+    },
+    {
+      "title": "The Clear Meridian",
+      "duration": 168,
+      "audioUrl": "https://ptown-wap-ar.s3.sa-east-1.amazonaws.com/mindmusic/music/foco/The_Clear_Meridian.mp3",
+      "photo": "https://images.unsplash.com/photo-1673369824122-e150258b9862"
+    },
+    {
+      "title": "The Quiet Horizon",
+      "duration": 177,
+      "audioUrl": "https://ptown-wap-ar.s3.sa-east-1.amazonaws.com/mindmusic/music/foco/The_Quiet_Horizon.mp3",
+      "photo": "https://images.unsplash.com/photo-1511458206431-afcf3cebe562"
+    }
+  ]
+}]]></content:encoded>
+    <excerpt:encoded><![CDATA[Una selección larga para sostener el estado de flujo creativo.]]></excerpt:encoded>
+    <wp:post_id>3004</wp:post_id>
+    <wp:post_date><![CDATA[2026-02-05 12:00:00]]></wp:post_date>
+    <wp:post_date_gmt><![CDATA[2026-02-05 15:00:00]]></wp:post_date_gmt>
+    <wp:post_modified><![CDATA[2026-02-05 12:00:00]]></wp:post_modified>
+    <wp:post_modified_gmt><![CDATA[2026-02-05 15:00:00]]></wp:post_modified_gmt>
+    <wp:comment_status><![CDATA[closed]]></wp:comment_status>
+    <wp:ping_status><![CDATA[closed]]></wp:ping_status>
+    <wp:post_name><![CDATA[playlist-flu-pl]]></wp:post_name>
+    <wp:status><![CDATA[publish]]></wp:status>
+    <wp:post_parent>0</wp:post_parent>
+    <wp:menu_order>0</wp:menu_order>
+    <wp:post_type><![CDATA[post]]></wp:post_type>
+    <wp:post_password></wp:post_password>
+    <wp:is_sticky>0</wp:is_sticky>
+    <category domain="category" nicename="playlists"><![CDATA[Playlists]]></category>
+  </item>
+
+  <item>
+    <title><![CDATA[Sube el Ánimo]]></title>
+    <link>https://contenidos.vip/mindmusic/playlist-ale-pl/</link>
+    <pubDate>Fri, 06 Feb 2026 12:00:00 GMT</pubDate>
+    <dc:creator><![CDATA[admin]]></dc:creator>
+    <guid isPermaLink="false">https://contenidos.vip/mindmusic/?p=3005</guid>
+    <description></description>
+    <content:encoded><![CDATA[{
+  "id": "ale-pl",
+  "moodId": "alegria",
+  "contentType": "playlists",
+  "title": "Sube el Ánimo",
+  "desc": "Canciones para recuperar la sonrisa en cualquier momento.",
+  "photo": "https://images.unsplash.com/photo-1475656106224-d72c2ab53e8d",
+  "order": 4,
+  "tracks": [
+    {
+      "title": "Golden Hour",
+      "duration": 173,
+      "audioUrl": "https://ptown-wap-ar.s3.sa-east-1.amazonaws.com/mindmusic/music/alegria/golden-hour.m4a",
+      "photo": "https://images.unsplash.com/photo-1593264787646-f07221d3b7de"
+    },
+    {
+      "title": "Uplift",
+      "duration": 173,
+      "audioUrl": "https://ptown-wap-ar.s3.sa-east-1.amazonaws.com/mindmusic/music/alegria/uplift.m4a",
+      "photo": "https://images.unsplash.com/photo-1520206444322-d2df0dd4e78e"
+    },
+    {
+      "title": "Lightness",
+      "duration": 155,
+      "audioUrl": "https://ptown-wap-ar.s3.sa-east-1.amazonaws.com/mindmusic/music/alegria/lightness.m4a",
+      "photo": "https://images.unsplash.com/photo-1611244806964-91d204d4a2a7"
+    },
+    {
+      "title": "Bright Side",
+      "duration": 175,
+      "audioUrl": "https://ptown-wap-ar.s3.sa-east-1.amazonaws.com/mindmusic/music/alegria/bright-side.m4a",
+      "photo": "https://images.unsplash.com/photo-1541417904950-b855846fe074"
+    },
+    {
+      "title": "Glow",
+      "duration": 182,
+      "audioUrl": "https://ptown-wap-ar.s3.sa-east-1.amazonaws.com/mindmusic/music/alegria/glow.m4a",
+      "photo": "https://images.unsplash.com/photo-1532028205213-4c4fa81306d4"
+    },
+    {
+      "title": "Sunrise",
+      "duration": 176,
+      "audioUrl": "https://ptown-wap-ar.s3.sa-east-1.amazonaws.com/mindmusic/music/alegria/sunrise.m4a",
+      "photo": "https://images.unsplash.com/photo-1774252338397-167cef2c68fd"
+    },
+    {
+      "title": "A Place to Leave Your Coat",
+      "duration": 179,
+      "audioUrl": "https://ptown-wap-ar.s3.sa-east-1.amazonaws.com/mindmusic/music/alegria/A_Place_to_Leave_Your_Coat.mp3",
+      "photo": "https://images.unsplash.com/photo-1561334112-5cc34885f22f"
+    },
+    {
+      "title": "Linen and Slow Light",
+      "duration": 180,
+      "audioUrl": "https://ptown-wap-ar.s3.sa-east-1.amazonaws.com/mindmusic/music/alegria/Linen_and_Slow_Light.mp3",
+      "photo": "https://images.unsplash.com/photo-1682421938316-4b186e25174c"
+    },
+    {
+      "title": "Sunlight Through the Leaves",
+      "duration": 150,
+      "audioUrl": "https://ptown-wap-ar.s3.sa-east-1.amazonaws.com/mindmusic/music/alegria/Sunlight_Through_The_Leaves.mp3",
+      "photo": "https://images.unsplash.com/photo-1489644484856-f3ddc0adc923"
+    },
+    {
+      "title": "The Gravity of Morning",
+      "duration": 174,
+      "audioUrl": "https://ptown-wap-ar.s3.sa-east-1.amazonaws.com/mindmusic/music/alegria/The_Gravity_of_Morning.mp3",
+      "photo": "https://images.unsplash.com/photo-1662038271111-5b1c0b4157e8"
+    }
+  ]
+}]]></content:encoded>
+    <excerpt:encoded><![CDATA[Canciones para recuperar la sonrisa en cualquier momento.]]></excerpt:encoded>
+    <wp:post_id>3005</wp:post_id>
+    <wp:post_date><![CDATA[2026-02-06 12:00:00]]></wp:post_date>
+    <wp:post_date_gmt><![CDATA[2026-02-06 15:00:00]]></wp:post_date_gmt>
+    <wp:post_modified><![CDATA[2026-02-06 12:00:00]]></wp:post_modified>
+    <wp:post_modified_gmt><![CDATA[2026-02-06 15:00:00]]></wp:post_modified_gmt>
+    <wp:comment_status><![CDATA[closed]]></wp:comment_status>
+    <wp:ping_status><![CDATA[closed]]></wp:ping_status>
+    <wp:post_name><![CDATA[playlist-ale-pl]]></wp:post_name>
+    <wp:status><![CDATA[publish]]></wp:status>
+    <wp:post_parent>0</wp:post_parent>
+    <wp:menu_order>0</wp:menu_order>
+    <wp:post_type><![CDATA[post]]></wp:post_type>
+    <wp:post_password></wp:post_password>
+    <wp:is_sticky>0</wp:is_sticky>
+    <category domain="category" nicename="playlists"><![CDATA[Playlists]]></category>
+  </item>
+
+  <item>
+    <title><![CDATA[Cero Estrés]]></title>
+    <link>https://contenidos.vip/mindmusic/playlist-rel-pl/</link>
+    <pubDate>Sat, 07 Feb 2026 12:00:00 GMT</pubDate>
+    <dc:creator><![CDATA[admin]]></dc:creator>
+    <guid isPermaLink="false">https://contenidos.vip/mindmusic/?p=3006</guid>
+    <description></description>
+    <content:encoded><![CDATA[{
+  "id": "rel-pl",
+  "moodId": "relax",
+  "contentType": "playlists",
+  "title": "Cero Estrés",
+  "desc": "Música ambiental para bajar el estrés acumulado.",
+  "photo": "https://images.unsplash.com/photo-1507502707541-f369a3b18502",
+  "order": 5,
+  "tracks": [
+    {
+      "title": "Drift",
+      "duration": 119,
+      "audioUrl": "https://ptown-wap-ar.s3.sa-east-1.amazonaws.com/mindmusic/music/relax/drift.m4a",
+      "photo": "https://images.unsplash.com/photo-1734830186361-6001d1a7ae37"
+    },
+    {
+      "title": "Unwind",
+      "duration": 181,
+      "audioUrl": "https://ptown-wap-ar.s3.sa-east-1.amazonaws.com/mindmusic/music/relax/unwind.m4a",
+      "photo": "https://images.unsplash.com/photo-1445112098124-3e76dd67983c"
+    },
+    {
+      "title": "Slow Down",
+      "duration": 168,
+      "audioUrl": "https://ptown-wap-ar.s3.sa-east-1.amazonaws.com/mindmusic/music/relax/slow-down.m4a",
+      "photo": "https://images.unsplash.com/photo-1503891617560-5b8c2e28cbf6"
+    },
+    {
+      "title": "Quiet Hour",
+      "duration": 162,
+      "audioUrl": "https://ptown-wap-ar.s3.sa-east-1.amazonaws.com/mindmusic/music/relax/quiet-hour.m4a",
+      "photo": "https://images.unsplash.com/photo-1614640672303-537679057c33"
+    },
+    {
+      "title": "Ease",
+      "duration": 174,
+      "audioUrl": "https://ptown-wap-ar.s3.sa-east-1.amazonaws.com/mindmusic/music/relax/ease.m4a",
+      "photo": "https://images.unsplash.com/photo-1532979772520-f2763956cce0"
+    },
+    {
+      "title": "A Gentle Place to Land",
+      "duration": 177,
+      "audioUrl": "https://ptown-wap-ar.s3.sa-east-1.amazonaws.com/mindmusic/music/relax/A_Gentle_Place_to_Land.mp3",
+      "photo": "https://images.unsplash.com/photo-1601276174812-63280a55656e"
+    },
+    {
+      "title": "Beneath the Amber Canopy",
+      "duration": 172,
+      "audioUrl": "https://ptown-wap-ar.s3.sa-east-1.amazonaws.com/mindmusic/music/relax/Beneath_the_Amber_Canopy.mp3",
+      "photo": "https://images.unsplash.com/photo-1542961870-4dc1dfe0986c"
+    },
+    {
+      "title": "Between Two Breaths",
+      "duration": 178,
+      "audioUrl": "https://ptown-wap-ar.s3.sa-east-1.amazonaws.com/mindmusic/music/relax/Between_Two_Breaths.mp3",
+      "photo": "https://images.unsplash.com/photo-1518708909080-704599b19972"
+    },
+    {
+      "title": "Holding the Quiet",
+      "duration": 177,
+      "audioUrl": "https://ptown-wap-ar.s3.sa-east-1.amazonaws.com/mindmusic/music/relax/Holding_The_Quiet.mp3",
+      "photo": "https://images.unsplash.com/photo-1568961248350-742799cdc67a"
+    },
+    {
+      "title": "Where Water Meets Willow",
+      "duration": 168,
+      "audioUrl": "https://ptown-wap-ar.s3.sa-east-1.amazonaws.com/mindmusic/music/relax/Where_Water_Meets_Willow.mp3",
+      "photo": "https://images.unsplash.com/photo-1629040082543-4e999cd0aa45"
+    }
+  ]
+}]]></content:encoded>
+    <excerpt:encoded><![CDATA[Música ambiental para bajar el estrés acumulado.]]></excerpt:encoded>
+    <wp:post_id>3006</wp:post_id>
+    <wp:post_date><![CDATA[2026-02-07 12:00:00]]></wp:post_date>
+    <wp:post_date_gmt><![CDATA[2026-02-07 15:00:00]]></wp:post_date_gmt>
+    <wp:post_modified><![CDATA[2026-02-07 12:00:00]]></wp:post_modified>
+    <wp:post_modified_gmt><![CDATA[2026-02-07 15:00:00]]></wp:post_modified_gmt>
+    <wp:comment_status><![CDATA[closed]]></wp:comment_status>
+    <wp:ping_status><![CDATA[closed]]></wp:ping_status>
+    <wp:post_name><![CDATA[playlist-rel-pl]]></wp:post_name>
+    <wp:status><![CDATA[publish]]></wp:status>
+    <wp:post_parent>0</wp:post_parent>
+    <wp:menu_order>0</wp:menu_order>
+    <wp:post_type><![CDATA[post]]></wp:post_type>
+    <wp:post_password></wp:post_password>
+    <wp:is_sticky>0</wp:is_sticky>
+    <category domain="category" nicename="playlists"><![CDATA[Playlists]]></category>
+  </item>
+
+  <item>
+    <title><![CDATA[Supera Cualquier Reto]]></title>
+    <link>https://contenidos.vip/mindmusic/playlist-sup-pl/</link>
+    <pubDate>Sun, 08 Feb 2026 12:00:00 GMT</pubDate>
+    <dc:creator><![CDATA[admin]]></dc:creator>
+    <guid isPermaLink="false">https://contenidos.vip/mindmusic/?p=3007</guid>
+    <description></description>
+    <content:encoded><![CDATA[{
+  "id": "sup-pl",
+  "moodId": "superacion",
+  "contentType": "playlists",
+  "title": "Supera Cualquier Reto",
+  "desc": "Música motivacional para acompañar procesos de superación.",
+  "photo": "https://images.unsplash.com/photo-1760363958141-82cc82c2f46c",
+  "order": 6,
+  "tracks": [
+    {
+      "title": "Breakthrough",
+      "duration": 172,
+      "audioUrl": "https://ptown-wap-ar.s3.sa-east-1.amazonaws.com/mindmusic/music/superacion/breakthrough.m4a",
+      "photo": "https://images.unsplash.com/photo-1601224748193-d24f166b5c77"
+    },
+    {
+      "title": "New Ground",
+      "duration": 173,
+      "audioUrl": "https://ptown-wap-ar.s3.sa-east-1.amazonaws.com/mindmusic/music/superacion/new-ground.m4a",
+      "photo": "https://images.unsplash.com/photo-1586022045497-31fcf76fa6cc"
+    },
+    {
+      "title": "Momentum",
+      "duration": 175,
+      "audioUrl": "https://ptown-wap-ar.s3.sa-east-1.amazonaws.com/mindmusic/music/superacion/momentum.m4a",
+      "photo": "https://images.unsplash.com/photo-1507553156678-fd07e00a106b"
+    },
+    {
+      "title": "Rise Up",
+      "duration": 173,
+      "audioUrl": "https://ptown-wap-ar.s3.sa-east-1.amazonaws.com/mindmusic/music/superacion/rise-up.m4a",
+      "photo": "https://images.unsplash.com/photo-1775334006478-865fa1b777de"
+    },
+    {
+      "title": "Steady Climb",
+      "duration": 172,
+      "audioUrl": "https://ptown-wap-ar.s3.sa-east-1.amazonaws.com/mindmusic/music/superacion/steady-climb.m4a",
+      "photo": "https://images.unsplash.com/photo-1559208722-abb22e0e918e"
+    },
+    {
+      "title": "First Light Over the Ridge",
+      "duration": 179,
+      "audioUrl": "https://ptown-wap-ar.s3.sa-east-1.amazonaws.com/mindmusic/music/superacion/First_Light_Over_the_Ridge.mp3",
+      "photo": "https://images.unsplash.com/photo-1723480999424-6489823dc6a6"
+    },
+    {
+      "title": "Porch Lights and Heavy Rain",
+      "duration": 175,
+      "audioUrl": "https://ptown-wap-ar.s3.sa-east-1.amazonaws.com/mindmusic/music/superacion/Porch_Lights_and_Heavy_Rain.mp3",
+      "photo": "https://images.unsplash.com/photo-1594087588915-6aa3c388474f"
+    },
+    {
+      "title": "The Measured Breath",
+      "duration": 177,
+      "audioUrl": "https://ptown-wap-ar.s3.sa-east-1.amazonaws.com/mindmusic/music/superacion/The_Measured_Breath.mp3",
+      "photo": "https://images.unsplash.com/photo-1528656707959-c9dc050e4841"
+    },
+    {
+      "title": "Where the Weight Lifts",
+      "duration": 178,
+      "audioUrl": "https://ptown-wap-ar.s3.sa-east-1.amazonaws.com/mindmusic/music/superacion/Where_The_Weight_Lifts.mp3",
+      "photo": "https://images.unsplash.com/photo-1598601065215-751bf8798a2c"
+    }
+  ]
+}]]></content:encoded>
+    <excerpt:encoded><![CDATA[Música motivacional para acompañar procesos de superación.]]></excerpt:encoded>
+    <wp:post_id>3007</wp:post_id>
+    <wp:post_date><![CDATA[2026-02-08 12:00:00]]></wp:post_date>
+    <wp:post_date_gmt><![CDATA[2026-02-08 15:00:00]]></wp:post_date_gmt>
+    <wp:post_modified><![CDATA[2026-02-08 12:00:00]]></wp:post_modified>
+    <wp:post_modified_gmt><![CDATA[2026-02-08 15:00:00]]></wp:post_modified_gmt>
+    <wp:comment_status><![CDATA[closed]]></wp:comment_status>
+    <wp:ping_status><![CDATA[closed]]></wp:ping_status>
+    <wp:post_name><![CDATA[playlist-sup-pl]]></wp:post_name>
+    <wp:status><![CDATA[publish]]></wp:status>
+    <wp:post_parent>0</wp:post_parent>
+    <wp:menu_order>0</wp:menu_order>
+    <wp:post_type><![CDATA[post]]></wp:post_type>
+    <wp:post_password></wp:post_password>
+    <wp:is_sticky>0</wp:is_sticky>
+    <category domain="category" nicename="playlists"><![CDATA[Playlists]]></category>
+  </item>
+</channel>
+</rss>

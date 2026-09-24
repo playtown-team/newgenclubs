@@ -7,6 +7,13 @@
       "runtimeArgs": ["-c", "python3 -m http.server ${PORT:-4180}"],
       "port": 4180,
       "autoPort": true
+    },
+    {
+      "name": "mindmusic-fixture",
+      "runtimeExecutable": "sh",
+      "runtimeArgs": ["-c", "node tools/serve-local.js ${PORT:-4181}"],
+      "port": 4181,
+      "autoPort": true
     }
   ]
 }
