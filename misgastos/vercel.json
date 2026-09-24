@@ -1,0 +1,9 @@
+{
+  "buildCommand": "",
+  "outputDirectory": ".",
+  "installCommand": "",
+  "rewrites": [
+    { "source": "/(ar|cl|py)", "destination": "/" },
+    { "source": "/(ar|cl|py)/(.*)", "destination": "/$2" }
+  ]
+}
