@@ -4,7 +4,7 @@
 //   RETOFIT — app.js
 // ═══════════════════════════════════════
 
-const API_BASE = 'https://contenidos.vip/retofit/wp-json/api/v3/articles?countr';
+const API_BASE = 'https://contenidos.vip/retofit/wp-json/api/v3/articles';
 
 // ═══════ EXERCISE ANIMATIONS ═══════
 const ANIMS = {
